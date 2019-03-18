@@ -1,0 +1,230 @@
+@import "./common/theme";
+
+html, body, #root {
+  height: 100%;
+  font-family: Arial;
+  background-color: @bg-gray;
+}
+
+body {
+  margin: 0;
+}
+
+.wheel-container {
+  width: 100%;
+  background-color: @primary-color-white;
+  margin-top: 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-image: url("./assets/images/pg_background.png");
+  background-size: cover;
+
+  .title {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 12px;
+
+    img {
+      width: 56%;
+    }
+  }
+
+  .bigWheel {
+    flex: 2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+
+    img {
+      width: 80%;
+    }
+
+    .wheel-start {
+      position: absolute;
+      width: 20%;
+
+      img {
+        width: 100%;
+      }
+    }
+  }
+
+  .detail {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 30px 0 50px;
+    width: 100%;
+
+    .bar {
+      width: 46%;
+      height: 40px;
+      line-height: 40px;
+      padding: 0 22px;
+      background-color: @primary-color-yellow;
+      border-radius: 20px;
+      font-size: 14px;
+      text-align: center;
+
+      span {
+        color: @primary-color-blue;
+        font-size: 16px;
+      }
+    }
+  }
+}
+
+.padding-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+
+  .card-container {
+    width: 88%;
+    border-radius: 20px;
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-shadow: 0 0 5px 2px rgba(0, 0, 0, 0.05);
+    background-color: @primary-color-white;
+
+    .car-title {
+      width: 100%;
+      height: 80px;
+      text-align: center;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      .bar {
+        min-width: 50%;
+        height: 40px;
+        line-height: 43px;
+        padding: 0 22px;
+        background-color: @primary-color-blue;
+        border-radius: 20px;
+        font-weight: bold;
+        font-size: 16px;
+        color: @primary-color-white;
+        border-bottom: 3px solid #006BA6;
+      }
+    }
+
+    .prize-list {
+      width: 100%;
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      padding: 6px 15px;
+      box-sizing: border-box;
+      margin-bottom: 15px;
+
+      .prize {
+        flex: 1;
+        text-align: center;
+        margin: 0 3px;
+        border-radius: 10px;
+        background-color: @primary-color-gray;
+
+        & > div:nth-child(1) {
+          width: 80%;
+          background-color: @primary-color-white;
+          margin: 10px auto 0;
+          overflow: hidden;
+
+          & > img {
+            width: 100%;
+            min-height: 130px;
+          }
+        }
+
+        & > div:nth-child(2) {
+          font-size: 12px;
+          margin: 10px 0;
+
+          & > div {
+            line-height: 16px;
+          }
+        }
+      }
+    }
+
+    .bg-gray {
+      width: 88%;
+      background-color: @primary-color-gray;
+      border-radius: 8px;
+      padding: 12px;
+      box-sizing: border-box;
+      margin-bottom: 20px;
+      font-size: 13px;
+
+      .winners-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        line-height: 20px;
+        font-size: 12px;
+        text-align: center;
+
+        .name {
+          flex: 127;
+        }
+
+        .code {
+          flex: 118;
+        }
+
+        .prize {
+          flex: 93;
+        }
+
+        .time {
+          flex: 123;
+        }
+      }
+
+      .QR-code-box {
+        display: flex;
+        justify-content: space-around;
+        margin: 10px 0;
+
+
+        .QR-code {
+          padding: 10px;
+          border-radius: 8px;
+          background-color: @primary-color-white;
+        }
+
+        .QR-detail {
+          display: flex;
+          flex-direction: column;
+          justify-content: space-around;
+        }
+      }
+
+      .QR-desc {
+        padding: 5px 10px 0;
+        font-size: 12px;
+      }
+    }
+  }
+
+}
+
+.red {
+  color: @primary-color-red;
+}
+
+.red-bold {
+  color: @primary-color-red;
+  font-weight: bold;
+}
