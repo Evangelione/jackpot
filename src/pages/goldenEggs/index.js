@@ -5,16 +5,13 @@ class Index extends Component {
   state = {
     visible: false,
     visible2: false,
-    animate: 0,
-    rotate: 0,
-  };
-
-  startWheel = () => {
-    // if (this.state.animate) return false;
-    this.setState({
-      // animate: 1,
-      rotate: this.state.rotate + Math.random() * 360,
-    });
+    eggs: [
+      require('@/assets/images/egg frenzy.png'),
+      require('@/assets/images/egg frenzy.png'),
+      require('@/assets/images/egg frenzy.png'),
+      require('@/assets/images/egg frenzy.png'),
+      require('@/assets/images/egg frenzy.png'),
+    ],
   };
 
   showModal = () => {
@@ -62,22 +59,58 @@ class Index extends Component {
     this.showModal2();
   };
 
-  render() {
-    const { rotate } = this.state;
-    return (
-      <div>
-        <div className='wheel-container'>
-          <div className='title'>
-            <img src={require('@/assets/images/title.png')} alt=""/>
-          </div>
-          <div className='bigWheel'>
-            <img src={require('@/assets/images/big wheel 4.png')} alt=""/>
-            <div className='wheel-start'>
-              <img src={require('@/assets/images/icon_start.png')}
-                   style={{ transition: 'all 1s', transform: `rotate(${rotate}deg)`, transformOrigin: '50% 60%' }}
-                   onClick={this.startWheel} alt=""/>
-            </div>
+  beatEgg = (index) => {
+    let eggArr = this.state.eggs;
+    eggArr[index] = require('@/assets/images/egg frenzy broken.png');
+    console.log(index);
+    this.setState({
+      eggs: eggArr,
+    });
+  };
 
+  mapEggs = () => {
+    return this.state.eggs.map(((value, index) => {
+      switch (index) {
+        case 0 :
+          return <img src={value} key={index} onClick={this.beatEgg.bind(null, index)}
+                      style={{ top: '-32px', left: 85 }} alt=""/>;
+          break;
+        case 1 :
+          return <img src={value} key={index} onClick={this.beatEgg.bind(null, index)}
+                      style={{ top: '-30px', left: 150 }} alt=""/>;
+          break;
+        case 2 :
+          return <img src={value} key={index} onClick={this.beatEgg.bind(null, index)}
+                      style={{ top: 6, left: 51 }} alt=""/>;
+          break;
+        case 3 :
+          return <img src={value} key={index} onClick={this.beatEgg.bind(null, index)}
+                      style={{ top: 15, left: 115 }} alt=""/>;
+          break;
+        case 4 :
+          return <img src={value} key={index} onClick={this.beatEgg.bind(null, index)}
+                      style={{ top: 6, left: 179 }} alt=""/>;
+          break;
+        default:
+          return null;
+      }
+    }));
+  };
+
+
+  render() {
+    const { eggs } = this.state;
+    return (
+      <div className='golden-bg'>
+        <div className='egg-container'>
+          <div className='title'>
+            <img src={require('@/assets/images/ps.png')} alt=""/>
+          </div>
+          <div className='egg-stage'>
+            <img src={require('@/assets/images/stage.png')} alt=""/>
+            <div className='eggs'>
+              {this.mapEggs()}
+            </div>
           </div>
           <div className='detail'>
             <div className='bar'>

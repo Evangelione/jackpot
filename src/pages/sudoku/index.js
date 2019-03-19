@@ -2,20 +2,7 @@ import React, { Component } from 'react';
 import { Modal, Input, Button } from 'antd';
 
 class Index extends Component {
-  state = {
-    visible: false,
-    visible2: false,
-    animate: 0,
-    rotate: 0,
-  };
-
-  startWheel = () => {
-    // if (this.state.animate) return false;
-    this.setState({
-      // animate: 1,
-      rotate: this.state.rotate + Math.random() * 360,
-    });
-  };
+  state = { visible: false, visible2: false };
 
   showModal = () => {
     this.setState({
@@ -63,22 +50,19 @@ class Index extends Component {
   };
 
   render() {
-    const { rotate } = this.state;
     return (
-      <div>
-        <div className='wheel-container'>
-          <div className='title'>
-            <img src={require('@/assets/images/title.png')} alt=""/>
+      <div style={{ backgroundColor: '#69C3FF' }}>
+        <div className='sudoku-container'>
+          <div className='sudoku-title'>
+            <img src={require('@/assets/images/kv.png')} alt=""/>
           </div>
-          <div className='bigWheel'>
-            <img src={require('@/assets/images/big wheel 4.png')} alt=""/>
-            <div className='wheel-start'>
-              <img src={require('@/assets/images/icon_start.png')}
-                   style={{ transition: 'all 1s', transform: `rotate(${rotate}deg)`, transformOrigin: '50% 60%' }}
-                   onClick={this.startWheel} alt=""/>
+          <div className='sudoku'>
+            <img src={require('@/assets/images/soduku_blue.png')} alt=""/>
+            <div className='sudoku-start'>
+              <img src={require('@/assets/images/go.png')} onClick={this.showModal} alt=""/>
             </div>
-
           </div>
+          <img src={require('@/assets/images/zz.png')} className='sudoku-mask' alt=""/>
           <div className='detail'>
             <div className='bar'>
               You have <span>3</span> raffle chances
