@@ -2,25 +2,16 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="817717f1-4b1b-4afd-bf7a-0089f847e978" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/assets/images/egg frenzy broken.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/images/egg frenzy.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/images/hammer.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/images/jb-bg.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/images/pg.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/images/pg_login.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/images/ps.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/images/sahua.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/images/stage.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/images/zz.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/pages/goldenEggs/index.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/pages/sudoku/index.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/images/mask.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/pages/cash/cashPrize.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/pages/cash/index.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/pages/cash/index.less" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/images/kv.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/assets/images/kv.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/common/theme.less" beforeDir="false" afterPath="$PROJECT_DIR$/src/common/theme.less" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/global.less" beforeDir="false" afterPath="$PROJECT_DIR$/src/global.less" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/bigWheel/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/bigWheel/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/index.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/index.less" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/goldenEggs/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/goldenEggs/index.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pages/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/index.less" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/index.less" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/sudoku/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/soduku/index.js" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -31,49 +22,44 @@
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="DockManager">
+    <window id="1">
+      <content type="file-editors">
+        <state>
+          <leaf>
+            <file pinned="false" current-in-tab="true">
+              <entry file="file://$USER_HOME$/Downloads/原生九宫格抽奖/原生九宫格.html">
+                <provider selected="true" editor-type-id="text-editor">
+                  <state relative-caret-position="243">
+                    <caret line="135" column="6" selection-start-line="135" selection-start-column="6" selection-end-line="135" selection-end-column="25" />
+                  </state>
+                </provider>
+              </entry>
+            </file>
+          </leaf>
+        </state>
+      </content>
+    </window>
+  </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/pages/soduku/index.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="375">
+              <caret line="126" column="87" selection-start-line="126" selection-start-column="87" selection-end-line="126" selection-end-column="87" />
+              <folding>
+                <element signature="e#0#41#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/pages/bigWheel/index.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="125">
-              <caret line="14" column="20" lean-forward="true" selection-start-line="14" selection-start-column="20" selection-end-line="14" selection-end-column="20" />
-              <folding>
-                <element signature="e#0#41#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/pages/goldenEggs/index.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="156">
-              <caret line="74" column="17" selection-start-line="74" selection-start-column="17" selection-end-line="74" selection-end-column="17" />
-              <folding>
-                <element signature="e#0#41#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/global.less">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="299">
-              <caret line="51" column="22" lean-forward="true" selection-start-line="51" selection-start-column="22" selection-end-line="51" selection-end-column="22" />
-              <folding>
-                <element signature="e#851#1400#0" />
-                <element signature="e#1423#4251#0" />
-                <element signature="e#4258#4290#0" />
-                <element signature="e#4302#4355#0" />
-                <element signature="e#4363#4396#0" />
-                <element signature="e#4409#4463#0" />
-                <element signature="e#4475#4626#0" />
-                <element signature="e#4646#5950#0" />
-                <element signature="e#5975#6197#0" />
-                <element signature="e#6995#7544#0" />
-              </folding>
+            <state relative-caret-position="396">
+              <caret line="334" column="14" selection-start-line="334" selection-start-column="14" selection-end-line="334" selection-end-column="14" />
             </state>
           </provider>
         </entry>
@@ -90,7 +76,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>global.css</find>
       <find>'</find>
       <find>gary</find>
       <find>#018bd7</find>
@@ -99,11 +84,28 @@
       <find>550</find>
       <find>prize list</find>
       <find>handleCancel</find>
-      <find>bar</find>
       <find>background-im</find>
       <find>egg</find>
       <find>show</find>
       <find>startWheel</find>
+      <find>eggs</find>
+      <find>:place</find>
+      <find>input-box</find>
+      <find>soduku</find>
+      <find>sudoku</find>
+      <find>get</find>
+      <find>bar</find>
+      <find>43px</find>
+      <find>file</find>
+      <find>container</find>
+      <find>bReady</find>
+      <find>active</find>
+      <find>mask</find>
+      <find>aa</find>
+      <find>page</find>
+      <find>start</find>
+      <find>lottery</find>
+      <find>this.prizeList.length</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -120,19 +122,25 @@
         <option value="$PROJECT_DIR$/src/common/theme.less" />
         <option value="$PROJECT_DIR$/src/pages/sudoku/index.js" />
         <option value="$PROJECT_DIR$/src/pages/index.css" />
+        <option value="$PROJECT_DIR$/src/pages/bigWheel/index.js" />
+        <option value="$PROJECT_DIR$/src/pages/lottery/index.js" />
+        <option value="$PROJECT_DIR$/src/pages/cash/index.js" />
+        <option value="$PROJECT_DIR$/src/pages/cash/index.less" />
         <option value="$PROJECT_DIR$/src/pages/index.less" />
         <option value="$PROJECT_DIR$/src/pages/index.js" />
+        <option value="$PROJECT_DIR$/src/pages/cash/cashPrize.js" />
         <option value="$PROJECT_DIR$/src/pages/goldenEggs/index.js" />
+        <option value="$USER_HOME$/Downloads/原生九宫格抽奖/原生九宫格.html" />
+        <option value="$PROJECT_DIR$/src/pages/soduku/index.js" />
         <option value="$PROJECT_DIR$/src/global.less" />
-        <option value="$PROJECT_DIR$/src/pages/bigWheel/index.js" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="811" />
-    <option name="y" value="353" />
-    <option name="width" value="1467" />
-    <option name="height" value="885" />
+    <option name="x" value="1065" />
+    <option name="y" value="250" />
+    <option name="width" value="1365" />
+    <option name="height" value="958" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -156,6 +164,19 @@
               <item name="jackpot" type="b2602c69:ProjectViewProjectNode" />
               <item name="jackpot" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="assets" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="jackpot" type="b2602c69:ProjectViewProjectNode" />
+              <item name="jackpot" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="assets" type="462c0819:PsiDirectoryNode" />
+              <item name="images" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="jackpot" type="b2602c69:ProjectViewProjectNode" />
+              <item name="jackpot" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="pages" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -163,14 +184,7 @@
               <item name="jackpot" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="pages" type="462c0819:PsiDirectoryNode" />
-              <item name="bigWheel" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="jackpot" type="b2602c69:ProjectViewProjectNode" />
-              <item name="jackpot" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="pages" type="462c0819:PsiDirectoryNode" />
-              <item name="sudoku" type="462c0819:PsiDirectoryNode" />
+              <item name="soduku" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -182,6 +196,7 @@
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="editor.config.ad.shown" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../notarization" />
     <property name="list.type.of.created.stylesheet" value="Less" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.standard" value="true" />
@@ -224,22 +239,23 @@
       <updated>1552899125035</updated>
       <workItem from="1552899126256" duration="14657000" />
       <workItem from="1552971730280" duration="1856000" />
-      <workItem from="1552975250049" duration="12300000" />
+      <workItem from="1552975250049" duration="15425000" />
+      <workItem from="1553058458727" duration="13397000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="28813000" />
+    <option name="totallyTimeSpent" value="45335000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="811" y="353" width="1467" height="885" extended-state="0" />
+    <frame x="1065" y="250" width="1365" height="958" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.20783766" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.22381312" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Find" order="1" weight="0.32919255" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.3276699" />
       <window_info anchor="bottom" id="Run" order="2" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
@@ -247,7 +263,7 @@
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="8" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="9" visible="true" weight="0.37283623" />
+      <window_info anchor="bottom" id="Terminal" order="9" weight="0.28940886" />
       <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -258,13 +274,6 @@
     <option name="version" value="1" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/pages/document.ejs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="275">
-          <caret line="11" column="27" selection-start-line="11" selection-start-column="27" selection-end-line="11" selection-end-column="27" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/layouts/index.js">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
@@ -332,33 +341,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/pages/sudoku/index.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="264">
-          <caret line="64" column="71" selection-start-line="64" selection-start-column="71" selection-end-line="64" selection-end-column="71" />
-          <folding>
-            <element signature="e#0#41#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/pages/index.less">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-38">
-          <caret line="29" column="3" lean-forward="true" selection-start-line="29" selection-start-column="3" selection-end-line="29" selection-end-column="3" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/pages/index.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="175">
-          <caret line="7" column="17" lean-forward="true" selection-end-line="30" />
-          <folding>
-            <element signature="e#0#41#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/assets/images/egg frenzy.png">
       <provider selected="true" editor-type-id="images" />
     </entry>
@@ -368,29 +350,55 @@
     <entry file="file://$PROJECT_DIR$/src/assets/images/stage.png">
       <provider selected="true" editor-type-id="images" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/global.less">
+    <entry file="file://$PROJECT_DIR$/src/pages/cash/index.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="299">
-          <caret line="51" column="22" lean-forward="true" selection-start-line="51" selection-start-column="22" selection-end-line="51" selection-end-column="22" />
+        <state relative-caret-position="400">
+          <caret line="16" selection-start-line="16" selection-end-line="16" />
           <folding>
-            <element signature="e#851#1400#0" />
-            <element signature="e#1423#4251#0" />
-            <element signature="e#4258#4290#0" />
-            <element signature="e#4302#4355#0" />
-            <element signature="e#4363#4396#0" />
-            <element signature="e#4409#4463#0" />
-            <element signature="e#4475#4626#0" />
-            <element signature="e#4646#5950#0" />
-            <element signature="e#5975#6197#0" />
-            <element signature="e#6995#7544#0" />
+            <element signature="e#0#41#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/pages/goldenEggs/index.js">
+    <entry file="file://$PROJECT_DIR$/src/pages/document.ejs">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="156">
-          <caret line="74" column="17" selection-start-line="74" selection-start-column="17" selection-end-line="74" selection-end-column="17" />
+        <state relative-caret-position="275">
+          <caret line="11" column="27" selection-start-line="11" selection-start-column="27" selection-end-line="11" selection-end-column="27" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/pages/cash/index.less">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="609">
+          <caret line="86" column="7" lean-forward="true" selection-start-line="77" selection-start-column="6" selection-end-line="86" selection-end-column="7" />
+          <folding>
+            <element signature="e#237#511#0" />
+            <element signature="e#522#594#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/pages/index.less">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="40">
+          <caret line="20" column="19" selection-start-line="20" selection-start-column="19" selection-end-line="20" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/pages/index.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="400">
+          <caret line="22" selection-start-line="22" selection-end-line="22" />
+          <folding>
+            <element signature="e#0#41#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/pages/cash/cashPrize.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="450">
+          <caret line="24" column="25" lean-forward="true" selection-start-line="24" selection-start-column="25" selection-end-line="24" selection-end-column="25" />
           <folding>
             <element signature="e#0#41#0" expanded="true" />
           </folding>
@@ -399,11 +407,45 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/pages/bigWheel/index.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="125">
-          <caret line="14" column="20" lean-forward="true" selection-start-line="14" selection-start-column="20" selection-end-line="14" selection-end-column="20" />
+        <state relative-caret-position="424">
+          <caret line="90" selection-start-line="90" selection-end-line="90" />
           <folding>
             <element signature="e#0#41#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/pages/goldenEggs/index.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="372">
+          <caret line="106" column="30" selection-start-line="106" selection-start-column="30" selection-end-line="106" selection-end-column="30" />
+          <folding>
+            <element signature="e#0#41#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/Downloads/原生九宫格抽奖/原生九宫格.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="243">
+          <caret line="135" column="6" selection-start-line="135" selection-start-column="6" selection-end-line="135" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/pages/soduku/index.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="375">
+          <caret line="126" column="87" selection-start-line="126" selection-start-column="87" selection-end-line="126" selection-end-column="87" />
+          <folding>
+            <element signature="e#0#41#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/global.less">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="396">
+          <caret line="334" column="14" selection-start-line="334" selection-start-column="14" selection-end-line="334" selection-end-column="14" />
         </state>
       </provider>
     </entry>

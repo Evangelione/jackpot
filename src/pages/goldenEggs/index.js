@@ -74,24 +74,20 @@ class Index extends Component {
         case 0 :
           return <img src={value} key={index} onClick={this.beatEgg.bind(null, index)}
                       style={{ top: '-32px', left: 85 }} alt=""/>;
-          break;
         case 1 :
           return <img src={value} key={index} onClick={this.beatEgg.bind(null, index)}
                       style={{ top: '-30px', left: 150 }} alt=""/>;
-          break;
         case 2 :
           return <img src={value} key={index} onClick={this.beatEgg.bind(null, index)}
                       style={{ top: 6, left: 51 }} alt=""/>;
-          break;
         case 3 :
           return <img src={value} key={index} onClick={this.beatEgg.bind(null, index)}
                       style={{ top: 15, left: 115 }} alt=""/>;
-          break;
         case 4 :
           return <img src={value} key={index} onClick={this.beatEgg.bind(null, index)}
                       style={{ top: 6, left: 179 }} alt=""/>;
-          break;
         default:
+          alert('1111');
           return null;
       }
     }));
@@ -99,7 +95,6 @@ class Index extends Component {
 
 
   render() {
-    const { eggs } = this.state;
     return (
       <div className='golden-bg'>
         <div className='egg-container'>
@@ -110,6 +105,9 @@ class Index extends Component {
             <img src={require('@/assets/images/stage.png')} alt=""/>
             <div className='eggs'>
               {this.mapEggs()}
+            </div>
+            <div className='hammer'>
+              <img src={require('@/assets/images/hammer.png')} alt=""/>
             </div>
           </div>
           <div className='detail'>

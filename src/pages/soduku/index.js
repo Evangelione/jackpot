@@ -1,8 +1,27 @@
 import React, { Component } from 'react';
 import { Modal, Input, Button } from 'antd';
 
+const order = [0, 1, 2, 4, 7, 6, 5, 3];
+
 class Index extends Component {
-  state = { visible: false, visible2: false };
+  state = {
+    visible: false,
+    visible2: false,
+  };
+
+  timer = null;
+  bReady = false;
+  prizeList = [
+    require('@/assets/images/vergil.jpg'),
+    require('@/assets/images/vergil.jpg'),
+    require('@/assets/images/vergil.jpg'),
+    require('@/assets/images/vergil.jpg'),
+    require('@/assets/images/go.png'),
+    require('@/assets/images/vergil.jpg'),
+    require('@/assets/images/vergil.jpg'),
+    require('@/assets/images/vergil.jpg'),
+    require('@/assets/images/vergil.jpg'),
+  ];
 
   showModal = () => {
     this.setState({
@@ -49,6 +68,47 @@ class Index extends Component {
     this.showModal2();
   };
 
+  lottery = (num) => {
+    let container = document.getElementById('container'),
+      li = container.getElementsByTagName('div');
+    console.log(li);
+    let i = 0, t = 60, round = 6, rNum = round * 8;
+    const setFreq = () => {
+      for (let j = 0; j < li.length; j++) {
+        li[j].className = '';
+      }
+      let ord = order[i % li.length];
+      li[ord].className = 'soduku-active';
+      i++;
+      if (i < rNum) {
+        this.timer = setTimeout(setFreq, t);
+      } else if (i >= rNum - 8 && i < rNum + num) {
+        t += (i - rNum + 8) * 5;
+        this.timer = setTimeout(setFreq, t);
+      }
+      if (i >= rNum + num) {
+        let timer2 = null;
+        timer2 = setTimeout(function() {
+          clearTimeout(timer2);
+        }, 1000);
+        this.bReady = false;
+        clearTimeout(this.timer);
+      }
+    };
+    this.timer = setTimeout(setFreq, t);
+  };
+
+  aClick = () => {
+    if (this.bReady) return false;
+    this.bReady = true;
+    let num = this.random(1, 9);
+    this.lottery(num);
+  };
+
+  random = (n, m) => {
+    return parseInt((m - n) * Math.random() + n);
+  };
+
   render() {
     return (
       <div style={{ backgroundColor: '#69C3FF' }}>
@@ -58,8 +118,21 @@ class Index extends Component {
           </div>
           <div className='sudoku'>
             <img src={require('@/assets/images/soduku_blue.png')} alt=""/>
-            <div className='sudoku-start'>
-              <img src={require('@/assets/images/go.png')} onClick={this.showModal} alt=""/>
+            {/*<div className='sudoku-start'>*/}
+            {/*<img src={require('@/assets/images/go.png')} onClick={this.showModal} alt=""/>*/}
+            {/*</div>*/}
+            <div className='sudoku-start-box' id='container'>
+              {this.prizeList.map((value, index) => {
+                if (index === 4) {
+                  return <span style={{ backgroundColor: 'transparent', display: 'block' }} key={index}>
+                    <img src={value} style={{ width: '100%', height: '100%' }}
+                         onClick={this.aClick} alt=""/>
+                  </span>;
+                }
+                return <div key={index}>
+                  <img src={value} alt=""/>
+                </div>;
+              })}
             </div>
           </div>
           <img src={require('@/assets/images/zz.png')} className='sudoku-mask' alt=""/>
