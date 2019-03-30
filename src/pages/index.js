@@ -53,6 +53,10 @@ class Index extends Component {
       message.error('请输入完整信息');
       return false;
     }
+    if (!this.props.location.query.activityId) {
+      message.error('活动路径无效');
+      return false;
+    }
     this.props.dispatch({
       type: 'global/login',
       payload: {
