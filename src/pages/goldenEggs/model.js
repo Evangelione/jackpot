@@ -4,7 +4,7 @@ import { message } from 'antd';
 export default {
   namespace: 'goldenEggs',
   state: {
-    pageDetail: [],
+    pageDetail: '',
   },
 
   subscriptions: {
@@ -31,8 +31,6 @@ export default {
       } else {
         message.error(data.msg);
       }
-
-
     },
   },
 

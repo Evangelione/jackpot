@@ -85,19 +85,35 @@ class Index extends Component {
         address: this.state.address,
         id: this.props.global.lotteryData.redeem.id,
       },
+    }).then(() => {
+      this.handleCancel();
+      // this.showModal2();
+      const { activityId } = this.props.location.query;
+      this.props.dispatch({
+        type: 'goldenEggs/fetchPageDetail',
+        payload: {
+          token: localStorage.getItem('token'),
+          activityId,
+        },
+      });
+      this.setState({
+        eggs: [
+          require('@/assets/images/egg frenzy.png'),
+          require('@/assets/images/egg frenzy.png'),
+          require('@/assets/images/egg frenzy.png'),
+          require('@/assets/images/egg frenzy.png'),
+          require('@/assets/images/egg frenzy.png'),
+        ],
+      });
     });
-    this.handleCancel();
-    this.showModal2();
   };
 
   beatEgg = (index) => {
-    const { activityId } = this.props.location.query;
     let eggArr = this.state.eggs;
-    eggArr[index] = require('@/assets/images/egg frenzy broken.png');
-    console.log(index);
-    this.setState({
-      eggs: eggArr,
-    });
+    if (eggArr[index] === require('@/assets/images/egg frenzy broken.png')) {
+      return false;
+    }
+    const { activityId } = this.props.location.query;
     this.props.dispatch({
       type: 'global/lottery',
       payload: {
@@ -107,6 +123,12 @@ class Index extends Component {
     }).then(() => {
       if (this.props.global.lotteryData) {
         this.showModal();
+      } else {
+        let eggArr = this.state.eggs;
+        eggArr[index] = require('@/assets/images/egg frenzy broken.png');
+        this.setState({
+          eggs: eggArr,
+        });
       }
     });
   };
