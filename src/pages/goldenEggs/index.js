@@ -1,6 +1,12 @@
 import React, { Component } from 'react';
-import { Modal, Input, Button } from 'antd';
+import { Modal, Input, Button, message } from 'antd';
+import { connect } from 'dva';
+import moment from 'moment';
 
+@connect(({ global, goldenEggs }) => ({
+  global,
+  goldenEggs,
+}))
 class Index extends Component {
   state = {
     visible: false,
@@ -12,7 +18,20 @@ class Index extends Component {
       require('@/assets/images/egg frenzy.png'),
       require('@/assets/images/egg frenzy.png'),
     ],
+    name: '',
+    address: '',
   };
+
+  componentDidMount() {
+    const { activityId } = this.props.location.query;
+    this.props.dispatch({
+      type: 'goldenEggs/fetchPageDetail',
+      payload: {
+        token: localStorage.getItem('token'),
+        activityId,
+      },
+    });
+  }
 
   showModal = () => {
     this.setState({
@@ -55,16 +74,40 @@ class Index extends Component {
   };
 
   submit = () => {
+    if (!this.state.name || !this.state.address) {
+      message.error('请填写完整信息');
+      return false;
+    }
+    this.props.dispatch({
+      type: 'global/postUserData',
+      payload: {
+        name: this.state.name,
+        address: this.state.address,
+        id: this.props.global.lotteryData.redeem.id,
+      },
+    });
     this.handleCancel();
     this.showModal2();
   };
 
   beatEgg = (index) => {
+    const { activityId } = this.props.location.query;
     let eggArr = this.state.eggs;
     eggArr[index] = require('@/assets/images/egg frenzy broken.png');
     console.log(index);
     this.setState({
       eggs: eggArr,
+    });
+    this.props.dispatch({
+      type: 'global/lottery',
+      payload: {
+        activityId,
+        token: localStorage.getItem('token'),
+      },
+    }).then(() => {
+      if (this.props.global.lotteryData) {
+        this.showModal();
+      }
     });
   };
 
@@ -93,8 +136,62 @@ class Index extends Component {
     }));
   };
 
+  mapPrizeList = () => {
+    return this.props.goldenEggs.pageDetail.prizes && this.props.goldenEggs.pageDetail.prizes.map((value, index) => {
+      return <div className='prize' key={index}>
+        <div>
+          <img src={value.image} alt=""/>
+        </div>
+        <div>
+          <div>{value.title}</div>
+          <div>{value.name}</div>
+          <div>{value.amount}</div>
+        </div>
+      </div>;
+    });
+  };
+
+  mapUsersList = () => {
+    return this.props.goldenEggs.pageDetail.users && this.props.goldenEggs.pageDetail.users.map((value, index) => {
+      return <div className='winners-item' key={index}>
+        <div className='name'>Richard ****</div>
+        <div className='code'>{value.imei.substr(0, 6) + ' ****'}</div>
+        <div className='prize'>{value.prize.name}</div>
+        <div className='time'>{value.createtime.substr(0, 10)}</div>
+      </div>;
+    });
+  };
+
+  mapRecordsList = () => {
+    return this.props.goldenEggs.pageDetail.records && this.props.goldenEggs.pageDetail.records.map((value, index) => {
+      return <div className='bg-gray' key={index}>
+        <div className='QR-code-box'>
+          <div className='QR-code'>
+            <img src={require('@/assets/images/er.png')} alt=""/>
+          </div>
+          <div className='QR-detail'>
+            <div>Prize: <span className='red'>{value.prize.name}</span></div>
+            <div>Redeem code: <span className='red-bold'>{value.awardCode}</span></div>
+            <div>[{moment(value.createtime).format('YYYY-MM-DD HH:mm:ss')}]</div>
+          </div>
+        </div>
+        <div className='QR-desc'>
+          {value.prize.description}
+        </div>
+      </div>;
+    });
+  };
+
+  changeField = (field, e) => {
+    this.setState({
+      [field]: e.target.value,
+    });
+  };
 
   render() {
+    const { pageDetail } = this.props.goldenEggs;
+    const { lotteryData, luckyTimes } = this.props.global;
+    const { name, address } = this.state;
     return (
       <div className='golden-bg'>
         <div className='egg-container'>
@@ -112,161 +209,163 @@ class Index extends Component {
           </div>
           <div className='detail'>
             <div className='bar'>
-              You have <span>3</span> raffle chances
+              You have <span>{luckyTimes}</span> raffle chances
             </div>
           </div>
         </div>
 
         <div className='padding-container'>
 
-
-          <div className='card-container'>
+          {pageDetail.records ? <div className='card-container'>
             <div className='car-title'>
               <div className='bar'>Award-winning record</div>
             </div>
-            <div className='bg-gray'>
-              <div className='QR-code-box'>
-                <div className='QR-code'>
-                  <img src={require('@/assets/images/er.png')} alt=""/>
-                </div>
-                <div className='QR-detail'>
-                  <div>Prize: <span className='red'>vivo X23</span></div>
-                  <div>Redeem code: <span className='red-bold'>876524</span></div>
-                  <div>[2019-05-12 18:23:34]</div>
-                </div>
-              </div>
-              <div className='QR-desc'>
-                In sit amet condimentum felis, quis finibus sapien. Nunc felis nisi, pellentesque accumsan diam ut,
-                accumsan porta turpis. Pellentesque
-              </div>
-            </div>
+            {this.mapRecordsList()}
+            {/*<div className='bg-gray'>*/}
+            {/*<div className='QR-code-box'>*/}
+            {/*<div className='QR-code'>*/}
+            {/*<img src={require('@/assets/images/er.png')} alt=""/>*/}
+            {/*</div>*/}
+            {/*<div className='QR-detail'>*/}
+            {/*<div>Prize: <span className='red'>vivo X23</span></div>*/}
+            {/*<div>Redeem code: <span className='red-bold'>876524</span></div>*/}
+            {/*<div>[2019-05-12 18:23:34]</div>*/}
+            {/*</div>*/}
+            {/*</div>*/}
+            {/*<div className='QR-desc'>*/}
+            {/*In sit amet condimentum felis, quis finibus sapien. Nunc felis nisi, pellentesque accumsan diam ut,*/}
+            {/*accumsan porta turpis. Pellentesque*/}
+            {/*</div>*/}
+            {/*</div>*/}
 
-            <div className='bg-gray'>
-              <div className='QR-code-box'>
-                <div className='QR-code'>
-                  <img src={require('@/assets/images/er.png')} alt=""/>
-                </div>
-                <div className='QR-detail'>
-                  <div>Prize: <span className='red'>vivo X23</span></div>
-                  <div>Redeem code: <span className='red-bold'>876524</span></div>
-                  <div>[2019-05-12 18:23:34]</div>
-                </div>
-              </div>
-              <div className='QR-desc'>
-                In sit amet condimentum felis, quis finibus sapien. Nunc felis nisi, pellentesque accumsan diam ut,
-                accumsan porta turpis. Pellentesque
-              </div>
-            </div>
+            {/*<div className='bg-gray'>*/}
+            {/*<div className='QR-code-box'>*/}
+            {/*<div className='QR-code'>*/}
+            {/*<img src={require('@/assets/images/er.png')} alt=""/>*/}
+            {/*</div>*/}
+            {/*<div className='QR-detail'>*/}
+            {/*<div>Prize: <span className='red'>vivo X23</span></div>*/}
+            {/*<div>Redeem code: <span className='red-bold'>876524</span></div>*/}
+            {/*<div>[2019-05-12 18:23:34]</div>*/}
+            {/*</div>*/}
+            {/*</div>*/}
+            {/*<div className='QR-desc'>*/}
+            {/*In sit amet condimentum felis, quis finibus sapien. Nunc felis nisi, pellentesque accumsan diam ut,*/}
+            {/*accumsan porta turpis. Pellentesque*/}
+            {/*</div>*/}
+            {/*</div>*/}
 
-            <div className='bg-gray'>
-              <div className='QR-code-box'>
-                <div className='QR-code'>
-                  <img src={require('@/assets/images/er.png')} alt=""/>
-                </div>
-                <div className='QR-detail'>
-                  <div>Prize: <span className='red'>vivo X23</span></div>
-                  <div>Redeem code: <span className='red-bold'>876524</span></div>
-                  <div>[2019-05-12 18:23:34]</div>
-                </div>
-              </div>
-              <div className='QR-desc'>
-                In sit amet condimentum felis, quis finibus sapien. Nunc felis nisi, pellentesque accumsan diam ut,
-                accumsan porta turpis. Pellentesque
-              </div>
-            </div>
+            {/*<div className='bg-gray'>*/}
+            {/*<div className='QR-code-box'>*/}
+            {/*<div className='QR-code'>*/}
+            {/*<img src={require('@/assets/images/er.png')} alt=""/>*/}
+            {/*</div>*/}
+            {/*<div className='QR-detail'>*/}
+            {/*<div>Prize: <span className='red'>vivo X23</span></div>*/}
+            {/*<div>Redeem code: <span className='red-bold'>876524</span></div>*/}
+            {/*<div>[2019-05-12 18:23:34]</div>*/}
+            {/*</div>*/}
+            {/*</div>*/}
+            {/*<div className='QR-desc'>*/}
+            {/*In sit amet condimentum felis, quis finibus sapien. Nunc felis nisi, pellentesque accumsan diam ut,*/}
+            {/*accumsan porta turpis. Pellentesque*/}
+            {/*</div>*/}
+            {/*</div>*/}
 
-            <div className='bg-gray'>
-              <div className='QR-code-box'>
-                <div className='QR-code'>
-                  <img src={require('@/assets/images/er.png')} alt=""/>
-                </div>
-                <div className='QR-detail'>
-                  <div>Prize: <span className='red'>vivo X23</span></div>
-                  <div>Redeem code: <span className='red-bold'>876524</span></div>
-                  <div>[2019-05-12 18:23:34]</div>
-                </div>
-              </div>
-              <div className='QR-desc'>
-                In sit amet condimentum felis, quis finibus sapien. Nunc felis nisi, pellentesque accumsan diam ut,
-                accumsan porta turpis. Pellentesque
-              </div>
-            </div>
-          </div>
-
+            {/*<div className='bg-gray'>*/}
+            {/*<div className='QR-code-box'>*/}
+            {/*<div className='QR-code'>*/}
+            {/*<img src={require('@/assets/images/er.png')} alt=""/>*/}
+            {/*</div>*/}
+            {/*<div className='QR-detail'>*/}
+            {/*<div>Prize: <span className='red'>vivo X23</span></div>*/}
+            {/*<div>Redeem code: <span className='red-bold'>876524</span></div>*/}
+            {/*<div>[2019-05-12 18:23:34]</div>*/}
+            {/*</div>*/}
+            {/*</div>*/}
+            {/*<div className='QR-desc'>*/}
+            {/*In sit amet condimentum felis, quis finibus sapien. Nunc felis nisi, pellentesque accumsan diam ut,*/}
+            {/*accumsan porta turpis. Pellentesque*/}
+            {/*</div>*/}
+            {/*</div>*/}
+          </div> : null}
 
           <div className='card-container'>
             <div className='car-title'>
               <div className='bar'>The prize list</div>
             </div>
             <div className='prize-list'>
-              <div className='prize'>
-                <div>
-                  <img src={require('@/assets/images/vergil.jpg')} alt=""/>
-                </div>
-                <div>
-                  <div>First Prize</div>
-                  <div>Vergil</div>
-                  <div>Quantity: 100</div>
-                </div>
-              </div>
-              <div className='prize'>
-                <div>
-                  <img src={require('@/assets/images/vergil.jpg')} alt=""/>
-                </div>
-                <div>
-                  <div>First Prize</div>
-                  <div>Vergil</div>
-                  <div>Quantity: 100</div>
-                </div>
-              </div>
-              <div className='prize'>
-                <div>
-                  <img src={require('@/assets/images/vergil.jpg')} alt=""/>
-                </div>
-                <div>
-                  <div>First Prize</div>
-                  <div>Vergil</div>
-                  <div>Quantity: 100</div>
-                </div>
-              </div>
+              {this.mapPrizeList()}
+              {/*<div className='prize'>*/}
+              {/*<div>*/}
+              {/*<img src={require('@/assets/images/vergil.jpg')} alt=""/>*/}
+              {/*</div>*/}
+              {/*<div>*/}
+              {/*<div>First Prize</div>*/}
+              {/*<div>Vergil</div>*/}
+              {/*<div>Quantity: 100</div>*/}
+              {/*</div>*/}
+              {/*</div>*/}
+              {/*<div className='prize'>*/}
+              {/*<div>*/}
+              {/*<img src={require('@/assets/images/vergil.jpg')} alt=""/>*/}
+              {/*</div>*/}
+              {/*<div>*/}
+              {/*<div>First Prize</div>*/}
+              {/*<div>Vergil</div>*/}
+              {/*<div>Quantity: 100</div>*/}
+              {/*</div>*/}
+              {/*</div>*/}
+              {/*<div className='prize'>*/}
+              {/*<div>*/}
+              {/*<img src={require('@/assets/images/vergil.jpg')} alt=""/>*/}
+              {/*</div>*/}
+              {/*<div>*/}
+              {/*<div>First Prize</div>*/}
+              {/*<div>Vergil</div>*/}
+              {/*<div>Quantity: 100</div>*/}
+              {/*</div>*/}
+              {/*</div>*/}
             </div>
           </div>
 
-          <div className='card-container'>
+          {pageDetail.description ? <div className='card-container'>
             <div className='car-title'>
               <div className='bar'>Event description</div>
             </div>
             <div className='bg-gray'>
-              Vestibulum pharetra dui ut erat venenatis, in vulputate mi varius. Integer sed sollicitudin felis. Morbi
-              mauris sem, pellentesque sit amet eleifend sed, egestas ac est. Phasellus non dolor vitae
+              {pageDetail.description}
             </div>
-          </div>
+          </div> : null}
 
-          <div className='card-container'>
+
+          {pageDetail.users ? <div className='card-container'>
             <div className='car-title'>
               <div className='bar'>The latest winners list</div>
             </div>
             <div className='bg-gray' style={{ padding: '6px 2px' }}>
-              <div className='winners-item'>
-                <div className='name'>Richard ****</div>
-                <div className='code'>751360 ****</div>
-                <div className='prize'>vivo X23</div>
-                <div className='time'>2019-05-12</div>
-              </div>
-              <div className='winners-item'>
-                <div className='name'>Richard ****</div>
-                <div className='code'>751360 ****</div>
-                <div className='prize'>vivo X23</div>
-                <div className='time'>2019-05-12</div>
-              </div>
-              <div className='winners-item'>
-                <div className='name'>Richard ****</div>
-                <div className='code'>751360 ****</div>
-                <div className='prize'>vivo X23</div>
-                <div className='time'>2019-05-12</div>
-              </div>
+              {this.mapUsersList()}
+              {/*<div className='winners-item'>*/}
+              {/*<div className='name'>Richard ****</div>*/}
+              {/*<div className='code'>751360 ****</div>*/}
+              {/*<div className='prize'>vivo X23</div>*/}
+              {/*<div className='time'>2019-05-12</div>*/}
+              {/*</div>*/}
+              {/*<div className='winners-item'>*/}
+              {/*<div className='name'>Richard ****</div>*/}
+              {/*<div className='code'>751360 ****</div>*/}
+              {/*<div className='prize'>vivo X23</div>*/}
+              {/*<div className='time'>2019-05-12</div>*/}
+              {/*</div>*/}
+              {/*<div className='winners-item'>*/}
+              {/*<div className='name'>Richard ****</div>*/}
+              {/*<div className='code'>751360 ****</div>*/}
+              {/*<div className='prize'>vivo X23</div>*/}
+              {/*<div className='time'>2019-05-12</div>*/}
+              {/*</div>*/}
             </div>
-          </div>
+          </div> : null}
+
         </div>
 
         <Modal
@@ -288,19 +387,20 @@ class Index extends Component {
             marginBottom: 5,
             color: '#000',
           }}>Congratulations on
-            winning a <span className='red-bold'>vivo X23</span></div>
+            winning a <span className='red-bold'>{lotteryData && lotteryData.prize.name}</span></div>
           <div style={{ textAlign: 'center', fontSize: 16, fontWeight: 600, color: '#000' }}>Redeem Code <span
-            className='red-bold'>876524</span></div>
+            className='red-bold'>{lotteryData && lotteryData.redeem.awardCode}</span></div>
 
           <div className='gray-box'>
-            <img src={require('@/assets/images/vergil.jpg')} alt=""/>
+            <img src={lotteryData && lotteryData.prize.image} alt=""/>
           </div>
 
           <div style={{ padding: '0 8%', textAlign: 'center' }}>
             <Input style={{ margin: '10px 0', height: 40, border: 'none', backgroundColor: '#f5f5f5' }}
-                   placeholder='Please enter your name'/>
+                   placeholder='Please enter your name' value={name} onChange={this.changeField.bind(null, 'name')}/>
             <Input style={{ height: 40, border: 'none', backgroundColor: '#f5f5f5' }}
-                   placeholder='Please enter your detailed address'/>
+                   placeholder='Please enter your detailed address' value={address}
+                   onChange={this.changeField.bind(null, 'address')}/>
             <Button type='primary' style={{
               width: 135,
               height: 45,
