@@ -50,3 +50,26 @@ export function postUserData(name, address, id) {
     body: formData,
   });
 }
+
+export function checkimei(imei, activityId) {
+  let formData = new FormData();
+  formData.append('imei', imei);
+  formData.append('activityId', activityId);
+  return request(`${api}/api/checkimei`, {
+    method: 'POST',
+    credentials: 'omit',
+    body: formData,
+  });
+}
+
+export function checkimeiAndPhone(imei, phone, activityId) {
+  let formData = new FormData();
+  formData.append('imei', imei);
+  formData.append('phone', phone);
+  formData.append('activityId', activityId);
+  return request(`${api}/api/checkimeiAndPhone`, {
+    method: 'POST',
+    credentials: 'omit',
+    body: formData,
+  });
+}

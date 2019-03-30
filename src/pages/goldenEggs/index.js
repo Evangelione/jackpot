@@ -397,6 +397,7 @@ class Index extends Component {
           closable={false}
           footer={null}
           maskClosable={false}
+          destroyOnClose={true}
           style={{ top: '10%' }}
         >
           <div className='blue-bold' style={{ fontSize: 26, textAlign: 'center', marginBottom: 15 }}>You are the

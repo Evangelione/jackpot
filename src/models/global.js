@@ -79,6 +79,21 @@ export default {
         :
         message.error(data.msg);
     },
+    * checkimei({ payload: { imei, activityId } }, { call, put }) {
+      const { data } = yield call(services.checkimei, imei, activityId);
+      parseInt(data.code, 10) === 1 ?
+        message.success(data.msg)
+        :
+        message.error(data.msg);
+    },
+    * checkimeiAndPhone({ payload: { imei, phone, activityId } }, { call, put }) {
+      const { data } = yield call(services.checkimeiAndPhone, imei, phone, activityId);
+      parseInt(data.code, 10) === 1 ?
+        message.success(data.msg)
+        :
+        message.error(data.msg);
+    },
+
   },
 
   reducers: {
