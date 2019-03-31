@@ -4,9 +4,10 @@ import { Motion, spring, presets } from 'react-motion';
 import { connect } from 'dva';
 import moment from 'moment';
 
-@connect(({ global, goldenEggs }) => ({
+@connect(({ global, goldenEggs, loading }) => ({
   global,
   goldenEggs,
+  loading: loading.models.global,
 }))
 class Index extends Component {
   state = {
@@ -14,6 +15,7 @@ class Index extends Component {
     visible2: false,
     eggs: [{
       image: require('@/assets/images/egg frenzy.png'),
+      thanks: require('@/assets/images/gd_thanks.png'),
       dTop: '-37px',
       dLeft: 90,
       top: -100,
@@ -22,6 +24,7 @@ class Index extends Component {
       eggRotate: 0,
     }, {
       image: require('@/assets/images/egg frenzy.png'),
+      thanks: require('@/assets/images/gd_thanks.png'),
       dTop: '-38px',
       dLeft: 79,
       top: -100,
@@ -30,6 +33,7 @@ class Index extends Component {
       eggRotate: 0,
     }, {
       image: require('@/assets/images/egg frenzy.png'),
+      thanks: require('@/assets/images/gd_thanks.png'),
       dTop: 10,
       dLeft: '-110px',
       top: -100,
@@ -38,6 +42,7 @@ class Index extends Component {
       eggRotate: 0,
     }, {
       image: require('@/assets/images/egg frenzy.png'),
+      thanks: require('@/assets/images/gd_thanks.png'),
       dTop: 22,
       dLeft: '-123px',
       top: -100,
@@ -46,6 +51,7 @@ class Index extends Component {
       eggRotate: 0,
     }, {
       image: require('@/assets/images/egg frenzy.png'),
+      thanks: require('@/assets/images/gd_thanks.png'),
       dTop: '-80px',
       dLeft: 197,
       top: -100,
@@ -145,6 +151,9 @@ class Index extends Component {
   };
 
   beatEgg = (index) => {
+    console.log(this.props.loading);
+    console.log(this.props);
+    if (this.props.loading) return false;
     let eggs = this.state.eggs;
     let egg = eggs[index];
     if (egg.top !== -100 || !this.state.hammerShow) return false;
@@ -156,6 +165,9 @@ class Index extends Component {
         token: localStorage.getItem('token'),
       },
     }).then(() => {
+      if (this.props.global.lotteryData.prize.id) {
+        egg.thanks = this.props.global.lotteryData.prize.image;
+      }
       egg.top = -40;
       egg.left = 70;
       this.setState({
@@ -208,9 +220,11 @@ class Index extends Component {
         });
       }, 1900);
       setTimeout(() => {
-        this.props.global.lotteryData && this.showModal();
+        if (this.props.global.luckyTimes - 0 === 0) {
+          this.showModal();
+        }
+        // this.props.global.lotteryData
       }, 2100);
-
     });
   };
 
@@ -254,7 +268,7 @@ class Index extends Component {
                      height: '143%',
                      display: interpolatingStyle.top !== -30 ? 'none' : 'block',
                    }} alt=""/>
-              <img src={require('@/assets/images/gd_thanks.png')}
+              <img src={value.thanks}
                    style={{
                      position: 'absolute',
                      top: '-21px',
@@ -303,7 +317,7 @@ class Index extends Component {
       return <div className='bg-gray' key={index}>
         <div className='QR-code-box'>
           <div className='QR-code'>
-            <img src={require('@/assets/images/er.png')} alt=""/>
+            <img src={value.prize.image} alt="" style={{ minWidth: 80, minHeight: 80 }}/>
           </div>
           <div className='QR-detail'>
             <div>Prize: <span className='red'>{value.prize.name}</span></div>
@@ -431,7 +445,7 @@ class Index extends Component {
               <div className='bar'>The prize list</div>
             </div>
             <div className='prize-list'>
-              {this.mapPrizeList()}
+                {this.mapPrizeList()}
               {/*<div className='prize'>*/}
               {/*<div>*/}
               {/*<img src={require('@/assets/images/vergil.jpg')} alt=""/>*/}

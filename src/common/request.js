@@ -1,5 +1,5 @@
 import fetch from 'dva/fetch';
-// import router from 'umi/router';
+import router from 'umi/router';
 
 function parseJSON(response) {
   return response.json();
@@ -36,19 +36,14 @@ export default function request(url, options) {
     .then(checkStatus)
     .then(parseJSON)
     .then(data => {
-      // if (data.code === -1) {
-      //   router.push({
-      //     pathname: '/login',
-      //   })
-      //   return {data}
-      // } else if (data.code === -2) {
-      //   router.push({
-      //     pathname: '/admin',
-      //   })
-      //   return {data}
-      // } else {
-      return { data };
-      // }
+      if (data.msg === 'token异常') {
+        router.push({
+          pathname: '/',
+        });
+        return { data };
+      } else {
+        return { data };
+      }
     })
     .catch(err => ({ err }));
 }

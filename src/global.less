@@ -130,18 +130,16 @@ body {
 
     .prize-list {
       width: 100%;
-      display: flex;
-      flex-direction: row;
-      justify-content: center;
-      align-items: center;
       padding: 6px 15px;
       box-sizing: border-box;
       margin-bottom: 15px;
+      overflow-x: auto;
 
       .prize {
-        flex: 1;
+        display: inline-block;
+        width: 31%;
         text-align: center;
-        margin: 0 3px;
+        margin: 5px 3px;
         border-radius: 10px;
         background-color: @primary-color-gray;
 
@@ -413,7 +411,7 @@ body {
       position: relative;
 
       img {
-        width: 80%;
+        width: 85%;
       }
 
       .hammer {
@@ -428,7 +426,7 @@ body {
 
       .eggs {
         position: absolute;
-        width: 80%;
+        width: 330px;
         top: -30%;
 
         img {
