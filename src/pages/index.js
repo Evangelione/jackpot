@@ -153,6 +153,7 @@ class Index extends Component {
     return (
       <div className={styles['login-bg']}>
         <Form className={styles['input-box']}>
+          <img src={require('@/assets/images/vivo.png')} style={{ width: '50%',marginBottom: 30 }} alt=""/>
           <Form.Item>
             {getFieldDecorator('imei', {
               rules: [{ required: true, pattern: REGS.imei, message: 'Invalid format' }],

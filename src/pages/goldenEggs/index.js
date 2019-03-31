@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Modal, Input, Button, message } from 'antd';
+import { Motion, spring, presets } from 'react-motion';
 import { connect } from 'dva';
 import moment from 'moment';
 
@@ -11,13 +12,48 @@ class Index extends Component {
   state = {
     visible: false,
     visible2: false,
-    eggs: [
-      require('@/assets/images/egg frenzy.png'),
-      require('@/assets/images/egg frenzy.png'),
-      require('@/assets/images/egg frenzy.png'),
-      require('@/assets/images/egg frenzy.png'),
-      require('@/assets/images/egg frenzy.png'),
-    ],
+    eggs: [{
+      image: require('@/assets/images/egg frenzy.png'),
+      dTop: '-37px',
+      dLeft: 90,
+      top: -100,
+      left: 240,
+      rotate: 0,
+      eggRotate: 0,
+    }, {
+      image: require('@/assets/images/egg frenzy.png'),
+      dTop: '-38px',
+      dLeft: 79,
+      top: -100,
+      left: 240,
+      rotate: 0,
+      eggRotate: 0,
+    }, {
+      image: require('@/assets/images/egg frenzy.png'),
+      dTop: 10,
+      dLeft: '-110px',
+      top: -100,
+      left: 240,
+      rotate: 0,
+      eggRotate: 0,
+    }, {
+      image: require('@/assets/images/egg frenzy.png'),
+      dTop: 22,
+      dLeft: '-123px',
+      top: -100,
+      left: 240,
+      rotate: 0,
+      eggRotate: 0,
+    }, {
+      image: require('@/assets/images/egg frenzy.png'),
+      dTop: '-80px',
+      dLeft: 197,
+      top: -100,
+      left: 240,
+      rotate: 0,
+      eggRotate: 0,
+    }],
+    hammerShow: true,
     name: '',
     address: '',
   };
@@ -109,10 +145,9 @@ class Index extends Component {
   };
 
   beatEgg = (index) => {
-    let eggArr = this.state.eggs;
-    if (eggArr[index] === require('@/assets/images/egg frenzy broken.png')) {
-      return false;
-    }
+    let eggs = this.state.eggs;
+    let egg = eggs[index];
+    if (egg.top !== -100 || !this.state.hammerShow) return false;
     const { activityId } = this.props.location.query;
     this.props.dispatch({
       type: 'global/lottery',
@@ -121,41 +156,120 @@ class Index extends Component {
         token: localStorage.getItem('token'),
       },
     }).then(() => {
-      if (this.props.global.lotteryData) {
-        this.showModal();
-      } else {
-        let eggArr = this.state.eggs;
-        eggArr[index] = require('@/assets/images/egg frenzy broken.png');
+      egg.top = -40;
+      egg.left = 70;
+      this.setState({
+        eggs: eggs,
+        hammerShow: false,
+      });
+      setTimeout(() => {
+        egg.top = -20;
+        egg.left = 40;
+        egg.rotate = -30;
         this.setState({
-          eggs: eggArr,
+          eggs: eggs,
         });
-      }
+      }, 500);
+      setTimeout(() => {
+        egg.top = -30;
+        egg.left = 60;
+        egg.rotate = 10;
+        this.setState({
+          eggs: eggs,
+        });
+      }, 800);
+      setTimeout(() => {
+        egg.eggRotate = 8;
+        this.setState({
+          eggs: eggs,
+        });
+      }, 1000);
+      setTimeout(() => {
+        egg.eggRotate = -8;
+        this.setState({
+          eggs: eggs,
+        });
+      }, 1200);
+      setTimeout(() => {
+        egg.eggRotate = 0;
+        this.setState({
+          eggs: eggs,
+        });
+      }, 1300);
+      setTimeout(() => {
+        egg.image = require('@/assets/images/egg frenzy broken.png');
+        this.setState({
+          eggs: eggs,
+        });
+      }, 1700);
+      setTimeout(() => {
+        this.setState({
+          hammerShow: true,
+        });
+      }, 1900);
+      setTimeout(() => {
+        this.props.global.lotteryData && this.showModal();
+      }, 2100);
+
     });
   };
 
   mapEggs = () => {
     return this.state.eggs.map(((value, index) => {
-      switch (index) {
-        case 0 :
-          return <img src={value} key={index} onClick={this.beatEgg.bind(null, index)}
-                      style={{ top: '-32px', left: 85 }} alt=""/>;
-        case 1 :
-          return <img src={value} key={index} onClick={this.beatEgg.bind(null, index)}
-                      style={{ top: '-30px', left: 150 }} alt=""/>;
-        case 2 :
-          return <img src={value} key={index} onClick={this.beatEgg.bind(null, index)}
-                      style={{ top: 6, left: 51 }} alt=""/>;
-        case 3 :
-          return <img src={value} key={index} onClick={this.beatEgg.bind(null, index)}
-                      style={{ top: 15, left: 115 }} alt=""/>;
-        case 4 :
-          return <img src={value} key={index} onClick={this.beatEgg.bind(null, index)}
-                      style={{ top: 6, left: 179 }} alt=""/>;
-        default:
-          alert('1111');
-          return null;
-      }
+      return <Motion key={index} style={{
+        top: spring(value.top),
+        left: spring(value.left),
+        rotate: spring(value.rotate, presets.wobbly),
+        eggRotate: spring(value.eggRotate, presets.wobbly),
+      }}>
+        {interpolatingStyle => {
+          return (
+            <div style={{
+              position: 'relative',
+              width: '25%',
+              display: 'inline-block',
+              top: value.dTop,
+              left: value.dLeft,
+            }}>
+              <img src={value.image} onClick={this.beatEgg.bind(null, index)}
+                   style={{ transform: `rotate(${interpolatingStyle.eggRotate}deg)`, transformOrigin: 'center bottom' }}
+                   alt=""/>
+              <img src={require('@/assets/images/hammer.png')} alt=""
+                   style={{
+                     position: 'absolute',
+                     top: interpolatingStyle.top,
+                     left: interpolatingStyle.left,
+                     transform: `rotate(${interpolatingStyle.rotate}deg)`,
+                     display: (interpolatingStyle.top === -30 || interpolatingStyle.top === -100) ? 'none' : 'block',
+                     zIndex: 999,
+                     width: 65,
+                     height: 82,
+                   }}/>
+              <img src={require('@/assets/images/sahua.png')}
+                   style={{
+                     position: 'absolute',
+                     top: '-25px',
+                     left: '-4px',
+                     width: '130%',
+                     height: '143%',
+                     display: interpolatingStyle.top !== -30 ? 'none' : 'block',
+                   }} alt=""/>
+              <img src={require('@/assets/images/gd_thanks.png')}
+                   style={{
+                     position: 'absolute',
+                     top: '-21px',
+                     left: '17px',
+                     width: 50,
+                     height: 50,
+                     display: interpolatingStyle.top !== -30 ? 'none' : 'block',
+                   }} alt=""/>
+              <div style={{ clear: 'both' }}/>
+            </div>
+          );
+        }}
+      </Motion>;
     }));
+
   };
 
   mapPrizeList = () => {
@@ -225,7 +339,7 @@ class Index extends Component {
             <div className='eggs'>
               {this.mapEggs()}
             </div>
-            <div className='hammer'>
+            <div className='hammer' style={{ display: this.state.hammerShow ? 'block' : 'none' }}>
               <img src={require('@/assets/images/hammer.png')} alt=""/>
             </div>
           </div>
