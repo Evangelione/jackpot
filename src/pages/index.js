@@ -57,7 +57,7 @@ class Index extends Component {
 
   login = () => {
     if (!this.props.location.query.activityId) {
-      message.error('活动路径无效');
+      message.error('路径没有activityId参数，无法识别活动');
       return false;
     }
     this.props.form.validateFieldsAndScroll((err, values) => {
@@ -85,7 +85,7 @@ class Index extends Component {
 
   IMeiBlur = (e) => {
     if (!this.props.location.query.activityId) {
-      message.error('活动路径无效');
+      message.error('路径没有activityId参数，无法识别活动');
       return false;
     }
     if (e.target.value.length === 15) {
@@ -101,7 +101,7 @@ class Index extends Component {
 
   phoneBlur = (e) => {
     if (!this.props.location.query.activityId) {
-      message.error('活动路径无效');
+      message.error('路径没有activityId参数，无法识别活动');
       return false;
     }
     if (this.props.form.getFieldValue('imei')) {

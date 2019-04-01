@@ -73,3 +73,13 @@ export function checkimeiAndPhone(imei, phone, activityId) {
     body: formData,
   });
 }
+
+export function fetchCascader(level, name) {
+  return request(`${api}/admin/city/select?name=${encodeURIComponent(name)}&level=${level}`, {
+    method: 'GET',
+    credentials: 'omit',
+    headers: {
+      token: localStorage.getItem('token'),
+    },
+  });
+}

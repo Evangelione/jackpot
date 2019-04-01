@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
-import { Modal, Input, Button, message } from 'antd';
+import { Modal, Input, Button, message, Select } from 'antd';
 import { Motion, spring, presets } from 'react-motion';
 import { connect } from 'dva';
 import moment from 'moment';
+
+const Option = Select.Option;
 
 @connect(({ global, goldenEggs, loading }) => ({
   global,
@@ -13,6 +15,9 @@ class Index extends Component {
   state = {
     visible: false,
     visible2: false,
+    level1: undefined,
+    level2: undefined,
+    level3: undefined,
     eggs: [{
       image: require('@/assets/images/egg frenzy.png'),
       thanks: require('@/assets/images/gd_thanks.png'),
@@ -73,6 +78,13 @@ class Index extends Component {
         activityId,
       },
     });
+    this.props.dispatch({
+      type: 'global/fetchCascader',
+      payload: {
+        level: 1,
+        name: '',
+      },
+    });
   }
 
   showModal = () => {
@@ -116,7 +128,7 @@ class Index extends Component {
   };
 
   submit = () => {
-    if (!this.state.name || !this.state.address) {
+    if (!this.state.name || !this.state.address || !this.state.level1 || !this.state.level2 || !this.state.level3) {
       message.error('请填写完整信息');
       return false;
     }
@@ -124,8 +136,8 @@ class Index extends Component {
       type: 'global/postUserData',
       payload: {
         name: this.state.name,
-        address: this.state.address,
-        id: this.props.global.lotteryData.redeem.id,
+        address: this.state.level1 + '-' + this.state.level2 + '-' + this.state.level3 + '-' + this.state.address,
+        id: this.props.global.lotteryData.hasPrize.id,
       },
     }).then(() => {
       this.handleCancel();
@@ -138,25 +150,61 @@ class Index extends Component {
           activityId,
         },
       });
-      this.setState({
-        eggs: [
-          require('@/assets/images/egg frenzy.png'),
-          require('@/assets/images/egg frenzy.png'),
-          require('@/assets/images/egg frenzy.png'),
-          require('@/assets/images/egg frenzy.png'),
-          require('@/assets/images/egg frenzy.png'),
-        ],
-      });
+      // this.setState({
+      //   eggs: [{
+      //     image: require('@/assets/images/egg frenzy.png'),
+      //     thanks: require('@/assets/images/gd_thanks.png'),
+      //     dTop: '-37px',
+      //     dLeft: 90,
+      //     top: -100,
+      //     left: 240,
+      //     rotate: 0,
+      //     eggRotate: 0,
+      //   }, {
+      //     image: require('@/assets/images/egg frenzy.png'),
+      //     thanks: require('@/assets/images/gd_thanks.png'),
+      //     dTop: '-38px',
+      //     dLeft: 79,
+      //     top: -100,
+      //     left: 240,
+      //     rotate: 0,
+      //     eggRotate: 0,
+      //   }, {
+      //     image: require('@/assets/images/egg frenzy.png'),
+      //     thanks: require('@/assets/images/gd_thanks.png'),
+      //     dTop: 10,
+      //     dLeft: '-110px',
+      //     top: -100,
+      //     left: 240,
+      //     rotate: 0,
+      //     eggRotate: 0,
+      //   }, {
+      //     image: require('@/assets/images/egg frenzy.png'),
+      //     thanks: require('@/assets/images/gd_thanks.png'),
+      //     dTop: 22,
+      //     dLeft: '-123px',
+      //     top: -100,
+      //     left: 240,
+      //     rotate: 0,
+      //     eggRotate: 0,
+      //   }, {
+      //     image: require('@/assets/images/egg frenzy.png'),
+      //     thanks: require('@/assets/images/gd_thanks.png'),
+      //     dTop: '-80px',
+      //     dLeft: 197,
+      //     top: -100,
+      //     left: 240,
+      //     rotate: 0,
+      //     eggRotate: 0,
+      //   }],
+      // });
     });
   };
 
   beatEgg = (index) => {
-    console.log(this.props.loading);
-    console.log(this.props);
-    if (this.props.loading) return false;
     let eggs = this.state.eggs;
     let egg = eggs[index];
-    if (egg.top !== -100 || !this.state.hammerShow) return false;
+    if (this.props.loading || (this.props.global.luckyTimes - 0 === 0) || egg.top !== -100 || !this.state.hammerShow) return false;
     const { activityId } = this.props.location.query;
     this.props.dispatch({
       type: 'global/lottery',
@@ -165,7 +213,7 @@ class Index extends Component {
         token: localStorage.getItem('token'),
       },
     }).then(() => {
-      if (this.props.global.lotteryData.prize.id) {
+      if (this.props.global.lotteryData.prize && this.props.global.lotteryData.prize.id) {
         egg.thanks = this.props.global.lotteryData.prize.image;
       }
       egg.top = -40;
@@ -221,8 +269,18 @@ class Index extends Component {
       }, 1900);
       setTimeout(() => {
         if (this.props.global.luckyTimes - 0 === 0) {
-          this.showModal();
+          if (this.props.global.lotteryData.hasPrize && this.props.global.lotteryData.hasPrize.id) {
+            this.showModal();
+          }
         }
+        const { activityId } = this.props.location.query;
+        this.props.dispatch({
+          type: 'goldenEggs/fetchPageDetail',
+          payload: {
+            token: localStorage.getItem('token'),
+            activityId,
+          },
+        });
         // this.props.global.lotteryData
       }, 2100);
     });
@@ -271,7 +329,7 @@ class Index extends Component {
               <img src={value.thanks}
                    style={{
                      position: 'absolute',
-                     top: '-21px',
+                     top: '-12px',
                      left: '17px',
                      width: 50,
                      height: 50,
@@ -304,8 +362,8 @@ class Index extends Component {
   mapUsersList = () => {
     return this.props.goldenEggs.pageDetail.users && this.props.goldenEggs.pageDetail.users.map((value, index) => {
       return <div className='winners-item' key={index}>
-        <div className='name'>Richard ****</div>
-        <div className='code'>{value.imei.substr(0, 6) + ' ****'}</div>
+        <div className='name'>{value.name || '****'}</div>
+        <div className='code'>{value.phone.substr(0, 6) + ' ****'}</div>
         <div className='prize'>{value.prize.name}</div>
         <div className='time'>{value.createtime.substr(0, 10)}</div>
       </div>;
@@ -317,7 +375,7 @@ class Index extends Component {
       return <div className='bg-gray' key={index}>
         <div className='QR-code-box'>
           <div className='QR-code'>
-            <img src={value.prize.image} alt="" style={{ minWidth: 80, minHeight: 80 }}/>
+            <img src={value.prize.image} alt="" style={{ minWidth: 80, minHeight: 80, width: '100%' }}/>
           </div>
           <div className='QR-detail'>
             <div>Prize: <span className='red'>{value.prize.name}</span></div>
@@ -338,10 +396,43 @@ class Index extends Component {
     });
   };
 
+  loadData = (selectedOptions) => {
+    const targetOption = selectedOptions[selectedOptions.length - 1];
+    targetOption.loading = true;
+
+    // load options lazily
+    this.props.dispatch({
+      type: 'global/fetchCascader',
+      payload: {
+        targetOption,
+      },
+    });
+  };
+
+  selectAddress = (level, name) => {
+    this.props.dispatch({
+      type: 'global/fetchCascader',
+      payload: {
+        level,
+        name,
+      },
+    });
+    this.setState({
+      [`level${level - 1}`]: name,
+    });
+  };
+
+  mapAddressItem = (arr) => {
+    return arr.map((item, index) => {
+      return <Option value={item.value} key={index}>{item.label}</Option>;
+    });
+  };
+
   render() {
     const { pageDetail } = this.props.goldenEggs;
     const { lotteryData, luckyTimes } = this.props.global;
     const { name, address } = this.state;
+    console.log(lotteryData);
     return (
       <div className='golden-bg'>
         <div className='egg-container'>
@@ -366,7 +457,7 @@ class Index extends Component {
 
         <div className='padding-container'>
 
-          {pageDetail.records ? <div className='card-container'>
+          {pageDetail.records && pageDetail.records.length ? <div className='card-container'>
             <div className='car-title'>
               <div className='bar'>Award-winning record</div>
             </div>
@@ -445,7 +536,7 @@ class Index extends Component {
               <div className='bar'>The prize list</div>
             </div>
             <div className='prize-list'>
-                {this.mapPrizeList()}
+              {this.mapPrizeList()}
               {/*<div className='prize'>*/}
               {/*<div>*/}
               {/*<img src={require('@/assets/images/vergil.jpg')} alt=""/>*/}
@@ -495,24 +586,6 @@ class Index extends Component {
             </div>
             <div className='bg-gray' style={{ padding: '6px 2px' }}>
               {this.mapUsersList()}
-              {/*<div className='winners-item'>*/}
-              {/*<div className='name'>Richard ****</div>*/}
-              {/*<div className='code'>751360 ****</div>*/}
-              {/*<div className='prize'>vivo X23</div>*/}
-              {/*<div className='time'>2019-05-12</div>*/}
-              {/*</div>*/}
-              {/*<div className='winners-item'>*/}
-              {/*<div className='name'>Richard ****</div>*/}
-              {/*<div className='code'>751360 ****</div>*/}
-              {/*<div className='prize'>vivo X23</div>*/}
-              {/*<div className='time'>2019-05-12</div>*/}
-              {/*</div>*/}
-              {/*<div className='winners-item'>*/}
-              {/*<div className='name'>Richard ****</div>*/}
-              {/*<div className='code'>751360 ****</div>*/}
-              {/*<div className='prize'>vivo X23</div>*/}
-              {/*<div className='time'>2019-05-12</div>*/}
-              {/*</div>*/}
             </div>
           </div> : null}
 
@@ -531,38 +604,50 @@ class Index extends Component {
           <div className='blue-bold' style={{ fontSize: 26, textAlign: 'center', marginBottom: 15 }}>You are the
             winner
           </div>
-          <div style={{
-            textAlign: 'center',
-            fontSize: 16,
-            fontWeight: 600,
-            marginBottom: 5,
-            color: '#000',
-          }}>Congratulations on
-            winning a <span className='red-bold'>{lotteryData && lotteryData.prize.name}</span></div>
-          <div style={{ textAlign: 'center', fontSize: 16, fontWeight: 600, color: '#000' }}>Redeem Code <span
-            className='red-bold'>{lotteryData && lotteryData.redeem.awardCode}</span></div>
-
-          <div className='gray-box'>
-            <img src={lotteryData && lotteryData.prize.image} alt=""/>
-          </div>
-
-          <div style={{ padding: '0 8%', textAlign: 'center' }}>
-            <Input style={{ margin: '10px 0', height: 40, border: 'none', backgroundColor: '#f5f5f5' }}
+          <div style={{ padding: '0 8%', textAlign: 'center' }} id='selectCustom'>
+            <Input style={{ margin: '10px 0', border: 'none', backgroundColor: '#f5f5f5' }}
                    placeholder='Please enter your name' value={name} onChange={this.changeField.bind(null, 'name')}/>
-            <Input style={{ height: 40, border: 'none', backgroundColor: '#f5f5f5' }}
-                   placeholder='Please enter your detailed address' value={address}
+            <Select value={this.state.level1} style={{
+              width: '100%',
+              border: 'none',
+              backgroundColor: '#f5f5f5',
+              borderRadius: 4,
+              color: '#000',
+              marginBottom: 10,
+            }} onChange={this.selectAddress.bind(null, 2)} placeholder='Select State'>
+              {this.mapAddressItem(this.props.global.level1)}
+            </Select>
+            <Select value={this.state.level2} style={{
+              width: '100%',
+              border: 'none',
+              backgroundColor: '#f5f5f5',
+              borderRadius: 4,
+              color: '#000',
+              marginBottom: 10,
+            }} onChange={this.selectAddress.bind(null, 3)} placeholder='Select District'>
+              {this.mapAddressItem(this.props.global.level2)}
+            </Select>
+            <Select value={this.state.level3} style={{
+              width: '100%',
+              border: 'none',
+              backgroundColor: '#f5f5f5',
+              borderRadius: 4,
+              color: '#000',
+            }} onChange={this.selectAddress.bind(null, 4)} placeholder='Select CityTown'>
+              {this.mapAddressItem(this.props.global.level3)}
+            </Select>
+            <Input style={{ margin: '10px 0', border: 'none', backgroundColor: '#f5f5f5' }}
+                   placeholder='Enter the detailed address' value={address}
                    onChange={this.changeField.bind(null, 'address')}/>
             <Button type='primary' style={{
               width: 135,
-              height: 45,
               fontSize: 18,
               marginTop: 25,
+              height: 40,
               backgroundColor: '#028BD7',
             }} onClick={this.submit}>Submit</Button>
           </div>
-
         </Modal>
-
         <Modal
           visible={this.state.visible2}
           onOk={this.handleOk2}
@@ -593,7 +678,6 @@ class Index extends Component {
               backgroundColor: '#028BD7',
             }} onClick={this.handleCancel2}>Confirm</Button>
           </div>
-
         </Modal>
       </div>
     );

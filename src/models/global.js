@@ -8,6 +8,10 @@ export default {
     loginKey: '',
     lotteryData: '',
     luckyTimes: '',
+    cascaderOption: [],
+    level1: [],
+    level2: [],
+    level3: [],
   },
 
   subscriptions: {
@@ -94,6 +98,18 @@ export default {
         message.error(data.msg);
     },
 
+    * fetchCascader({ payload: { level, name } }, { call, put }) {
+      const { data } = yield call(services.fetchCascader, level, name);
+      parseInt(data.code, 10) === 1 ?
+        yield put({
+          type: 'save',
+          payload: {
+            [`level${level}`]: data.data,
+          },
+        })
+        :
+        message.error(data.msg);
+    },
   },
 
   reducers: {
