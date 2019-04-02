@@ -109,7 +109,7 @@ class Index extends Component {
         type: 'global/checkimeiAndPhone',
         payload: {
           imei: this.props.form.getFieldValue('imei'),
-          phone: e.target.value,
+          phone: this.state.postStr.substr(1) + e.target.value,
           activityId: this.props.location.query.activityId,
         },
       });
@@ -153,7 +153,7 @@ class Index extends Component {
     return (
       <div className={styles['login-bg']}>
         <Form className={styles['input-box']}>
-          <img src={require('@/assets/images/vivo.png')} style={{ width: '50%',marginBottom: 30 }} alt=""/>
+          <img src={require('@/assets/images/vivo.png')} style={{ width: '50%', marginBottom: 30 }} alt=""/>
           <Form.Item>
             {getFieldDecorator('imei', {
               rules: [{ required: true, pattern: REGS.imei, message: 'Invalid format' }],
