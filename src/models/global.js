@@ -110,6 +110,13 @@ export default {
         :
         message.error(data.msg);
     },
+    * cashLottery({ payload: { phone, awardCode } }, { call, put }) {
+      const { data } = yield call(services.cashLottery, phone, awardCode);
+      parseInt(data.code, 10) === 1 ?
+        message.success(data.msg)
+        :
+        message.error(data.msg);
+    },
   },
 
   reducers: {

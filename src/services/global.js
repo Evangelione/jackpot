@@ -83,3 +83,17 @@ export function fetchCascader(level, name) {
     },
   });
 }
+
+export function cashLottery(phone, awardCode) {
+  let formData = new FormData();
+  formData.append('phone', phone);
+  formData.append('awardCode', awardCode);
+  return request(`${api}/api/activity/user/redeem`, {
+    method: 'POST',
+    credentials: 'omit',
+    body: formData,
+    headers: {
+      token: localStorage.getItem('token'),
+    },
+  });
+}
