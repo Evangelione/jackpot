@@ -67,6 +67,7 @@ class Index extends Component {
     hammerShow: true,
     name: '',
     address: '',
+    pinCode: '',
   };
 
   componentDidMount() {
@@ -128,7 +129,7 @@ class Index extends Component {
   };
 
   submit = () => {
-    if (!this.state.name || !this.state.address || !this.state.level1 || !this.state.level2 || !this.state.level3) {
+    if (!this.state.name || !this.state.address || !this.state.level1 || !this.state.level2 || !this.state.level3 || !this.state.pinCode) {
       message.error('请填写完整信息');
       return false;
     }
@@ -138,6 +139,7 @@ class Index extends Component {
         name: this.state.name,
         address: this.state.level1 + '-' + this.state.level2 + '-' + this.state.level3 + '-' + this.state.address,
         id: this.props.global.lotteryData.hasPrize.id,
+        pinCode: this.state.pinCode,
       },
     }).then(() => {
       this.handleCancel();
@@ -431,7 +433,7 @@ class Index extends Component {
   render() {
     const { pageDetail } = this.props.goldenEggs;
     const { lotteryData, luckyTimes } = this.props.global;
-    const { name, address } = this.state;
+    const { name, address, pinCode } = this.state;
     console.log(lotteryData);
     return (
       <div className='golden-bg'>
@@ -639,6 +641,9 @@ class Index extends Component {
             <Input style={{ margin: '10px 0', border: 'none', backgroundColor: '#f5f5f5' }}
                    placeholder='Enter the detailed address' value={address}
                    onChange={this.changeField.bind(null, 'address')}/>
+            <Input style={{ border: 'none', backgroundColor: '#f5f5f5' }}
+                   placeholder='Enter the PIN Code' value={pinCode}
+                   onChange={this.changeField.bind(null, 'pinCode')}/>
             <Button type='primary' style={{
               width: 135,
               fontSize: 18,

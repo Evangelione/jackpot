@@ -36,11 +36,12 @@ export function lottery(token, activityId) {
   });
 }
 
-export function postUserData(name, address, id) {
+export function postUserData(name, address, id, pinCode) {
   let formData = new FormData();
   formData.append('name', name);
   formData.append('address', address);
   formData.append('id', id);
+  formData.append('pinCode', pinCode);
   return request(`${api}/api/lottery/user/save`, {
     method: 'POST',
     credentials: 'omit',

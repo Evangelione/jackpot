@@ -76,8 +76,8 @@ export default {
         :
         message.error(data.msg);
     },
-    * postUserData({ payload: { name, address, id } }, { call, put }) {
-      const { data } = yield call(services.postUserData, name, address, id);
+    * postUserData({ payload: { name, address, id, pinCode } }, { call, put }) {
+      const { data } = yield call(services.postUserData, name, address, id, pinCode);
       parseInt(data.code, 10) === 1 ?
         message.success(data.msg)
         :
