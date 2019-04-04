@@ -5,6 +5,7 @@ import { connect } from 'dva';
 import moment from 'moment';
 
 const Option = Select.Option;
+const HEIGHT = window.screen.width;
 
 @connect(({ global, goldenEggs, loading }) => ({
   global,
@@ -21,7 +22,7 @@ class Index extends Component {
     eggs: [{
       image: require('@/assets/images/egg frenzy.png'),
       thanks: require('@/assets/images/gd_thanks.png'),
-      dTop: '-37px',
+      dTop: '-47px',
       dLeft: 90,
       top: -100,
       left: 240,
@@ -30,7 +31,7 @@ class Index extends Component {
     }, {
       image: require('@/assets/images/egg frenzy.png'),
       thanks: require('@/assets/images/gd_thanks.png'),
-      dTop: '-38px',
+      dTop: '-48px',
       dLeft: 79,
       top: -100,
       left: 240,
@@ -48,8 +49,8 @@ class Index extends Component {
     }, {
       image: require('@/assets/images/egg frenzy.png'),
       thanks: require('@/assets/images/gd_thanks.png'),
-      dTop: 22,
-      dLeft: '-123px',
+      dTop: 16,
+      dLeft: '-121px',
       top: -100,
       left: 240,
       rotate: 0,
@@ -156,7 +157,7 @@ class Index extends Component {
       //   eggs: [{
       //     image: require('@/assets/images/egg frenzy.png'),
       //     thanks: require('@/assets/images/gd_thanks.png'),
-      //     dTop: '-37px',
+      //     dTop: '-47px',
       //     dLeft: 90,
       //     top: -100,
       //     left: 240,
@@ -165,7 +166,7 @@ class Index extends Component {
       //   }, {
       //     image: require('@/assets/images/egg frenzy.png'),
       //     thanks: require('@/assets/images/gd_thanks.png'),
-      //     dTop: '-38px',
+      //     dTop: '-48px',
       //     dLeft: 79,
       //     top: -100,
       //     left: 240,
@@ -183,8 +184,8 @@ class Index extends Component {
       //   }, {
       //     image: require('@/assets/images/egg frenzy.png'),
       //     thanks: require('@/assets/images/gd_thanks.png'),
-      //     dTop: 22,
-      //     dLeft: '-123px',
+      //     dTop: 16,
+      //     dLeft: '-121px',
       //     top: -100,
       //     left: 240,
       //     rotate: 0,
@@ -350,7 +351,11 @@ class Index extends Component {
     return this.props.goldenEggs.pageDetail.prizes && this.props.goldenEggs.pageDetail.prizes.map((value, index) => {
       return <div className='prize' key={index}>
         <div>
-          <img src={value.image} alt=""/>
+          <div style={{
+            background: `url(${value.image}) no-repeat center center`,
+            backgroundSize: 'cover',
+            height: HEIGHT / 3,
+          }}/>
         </div>
         <div>
           <div>{value.title}</div>
