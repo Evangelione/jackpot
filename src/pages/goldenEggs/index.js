@@ -19,6 +19,7 @@ class Index extends Component {
     level1: undefined,
     level2: undefined,
     level3: undefined,
+    single: false,
     eggs: [{
       image: require('@/assets/images/egg frenzy.png'),
       thanks: require('@/assets/images/gd_thanks.png'),
@@ -89,16 +90,22 @@ class Index extends Component {
     });
   }
 
-  showModal = () => {
+  showModal = (single) => {
     this.setState({
       visible: true,
     });
+    if(single === 'single') {
+      this.setState({
+        single: true,
+    });
+    }
   };
 
   handleOk = (e) => {
     console.log(e);
     this.setState({
       visible: false,
+      single: false
     });
   };
 
@@ -106,6 +113,7 @@ class Index extends Component {
     console.log(e);
     this.setState({
       visible: false,
+      single: false
     });
   };
 
@@ -134,12 +142,18 @@ class Index extends Component {
       message.error('请填写完整信息');
       return false;
     }
+    let cacheId = ''
+    if(this.state.single) {
+      cacheId = this.props.goldenEggs.pageDetail.prizes[0].id
+    } else {
+      cacheId = this.props.global.lotteryData.hasPrize.id
+    }
     this.props.dispatch({
       type: 'global/postUserData',
       payload: {
         name: this.state.name,
         address: this.state.level1 + '-' + this.state.level2 + '-' + this.state.level3 + '-' + this.state.address,
-        id: this.props.global.lotteryData.hasPrize.id,
+        id: cacheId,
         pinCode: this.state.pinCode,
       },
     }).then(() => {
@@ -542,6 +556,7 @@ class Index extends Component {
             <div className='car-title'>
               <div className='bar'>The prize list</div>
             </div>
+            <Button onClick={this.showModal.bind(null, 'single')} style={{borderColor: '#028BD7', color:'#028BD7', marginBottom:5}}>contact details</Button>
             <div className='prize-list'>
               {this.mapPrizeList()}
               {/*<div className='prize'>*/}
