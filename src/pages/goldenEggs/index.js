@@ -94,10 +94,10 @@ class Index extends Component {
     this.setState({
       visible: true,
     });
-    if(single === 'single') {
+    if (single === 'single') {
       this.setState({
         single: true,
-    });
+      });
     }
   };
 
@@ -105,7 +105,7 @@ class Index extends Component {
     console.log(e);
     this.setState({
       visible: false,
-      single: false
+      single: false,
     });
   };
 
@@ -113,7 +113,7 @@ class Index extends Component {
     console.log(e);
     this.setState({
       visible: false,
-      single: false
+      single: false,
     });
   };
 
@@ -142,11 +142,11 @@ class Index extends Component {
       message.error('请填写完整信息');
       return false;
     }
-    let cacheId = ''
-    if(this.state.single) {
-      cacheId = this.props.goldenEggs.pageDetail.prizes[0].id
+    let cacheId = '';
+    if (this.state.single) {
+      cacheId = this.props.goldenEggs.pageDetail.prizes[0].id;
     } else {
-      cacheId = this.props.global.lotteryData.hasPrize.id
+      cacheId = this.props.global.lotteryData.hasPrize.id;
     }
     this.props.dispatch({
       type: 'global/postUserData',
@@ -556,7 +556,10 @@ class Index extends Component {
             <div className='car-title'>
               <div className='bar'>The prize list</div>
             </div>
-            <Button onClick={this.showModal.bind(null, 'single')} style={{borderColor: '#028BD7', color:'#028BD7', marginBottom:5}}>contact details</Button>
+            {pageDetail.prizes && pageDetail.prizes.length !== 0 ?
+              <Button onClick={this.showModal.bind(null, 'single')}
+                      style={{ borderColor: '#028BD7', color: '#028BD7', marginBottom: 5 }}>contact
+                details</Button> : null}
             <div className='prize-list'>
               {this.mapPrizeList()}
               {/*<div className='prize'>*/}
