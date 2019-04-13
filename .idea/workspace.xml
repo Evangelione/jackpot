@@ -2,9 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="817717f1-4b1b-4afd-bf7a-0089f847e978" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/global.less" beforeDir="false" afterPath="$PROJECT_DIR$/src/global.less" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/models/global.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/models/global.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pages/goldenEggs/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/goldenEggs/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/services/global.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/global.js" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -17,11 +20,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/pages/cash/index.js">
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/pages/index.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1550">
-              <caret line="65" column="44" selection-start-line="65" selection-start-column="44" selection-end-line="65" selection-end-column="44" />
+            <state relative-caret-position="338">
+              <caret line="89" column="26" selection-start-line="89" selection-start-column="26" selection-end-line="89" selection-end-column="26" />
               <folding>
                 <element signature="e#0#41#0" expanded="true" />
               </folding>
@@ -32,8 +35,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/models/global.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2750">
-              <caret line="112" column="17" selection-start-line="112" selection-start-column="6" selection-end-line="112" selection-end-column="17" />
+            <state relative-caret-position="419">
+              <caret line="115" column="42" lean-forward="true" selection-start-line="115" selection-start-column="42" selection-end-line="115" selection-end-column="42" />
               <folding>
                 <element signature="e#0#47#0" expanded="true" />
               </folding>
@@ -42,37 +45,22 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/services/global.js">
+        <entry file="file://$PROJECT_DIR$/src/pages/goldenEggs/index.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2400">
-              <caret line="97" column="6" selection-start-line="97" selection-start-column="6" selection-end-line="97" selection-end-column="6" />
+            <state relative-caret-position="839">
+              <caret line="103" selection-start-line="103" selection-end-line="103" />
               <folding>
-                <element signature="e#0#39#0" expanded="true" />
+                <element signature="e#0#41#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/pages/index.js">
+        <entry file="file://$PROJECT_DIR$/src/global.less">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1250">
-              <caret line="54" column="7" selection-start-line="54" selection-start-column="7" selection-end-line="54" selection-end-column="7" />
-              <folding>
-                <element signature="e#0#41#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/pages/goldenEggs/index.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-11267">
-              <caret line="9" column="17" lean-forward="true" selection-start-line="9" selection-start-column="17" selection-end-line="9" selection-end-column="17" />
-              <folding>
-                <element signature="e#0#41#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="256">
+              <caret line="385" selection-start-line="385" selection-end-line="385" />
             </state>
           </provider>
         </entry>
@@ -89,19 +77,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>fetchPageDetail</find>
-      <find>setState({</find>
-      <find>Richard</find>
-      <find>postUserData</find>
-      <find>lotteryData.prize</find>
-      <find>award</find>
-      <find>please enter your detailed address</find>
-      <find>Cascader</find>
-      <find>onChange</find>
-      <find>lotteryData</find>
-      <find>message</find>
-      <find>loadData</find>
-      <find>mapAddressItem</find>
       <find>selectAddress</find>
       <find>address</find>
       <find>fetchCascader</find>
@@ -110,15 +85,28 @@
       <find>lottery</find>
       <find>submit</find>
       <find>cashLottery</find>
-      <find>checkimeiAndPhone</find>
       <find>this.state.postStr</find>
       <find>postStr</find>
       <find>checkimeia</find>
       <find>codeHolder</find>
       <find>contact deta</find>
       <find>showModal</find>
-      <find>pageDetail</find>
       <find>loading</find>
+      <find>checkimei</find>
+      <find>checkimeiAndPhone</find>
+      <find>the</find>
+      <find>pageDetail</find>
+      <find>handleCancel</find>
+      <find>pageDetail.prizes</find>
+      <find>pageDetail.records</find>
+      <find>pageDetail.recor</find>
+      <find>background</find>
+      <find>.golden-bg</find>
+      <find>backg</find>
+      <find>postUserData</find>
+      <find>golden-bg</find>
+      <find>countDown</find>
+      <find>timeout</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -146,19 +134,19 @@
         <option value="$PROJECT_DIR$/src/pages/index.less" />
         <option value="$PROJECT_DIR$/src/common/request.js" />
         <option value="$PROJECT_DIR$/src/pages/bigWheel/index.js" />
-        <option value="$PROJECT_DIR$/src/global.less" />
         <option value="$PROJECT_DIR$/src/common/constant.js" />
-        <option value="$PROJECT_DIR$/src/models/global.js" />
-        <option value="$PROJECT_DIR$/src/services/global.js" />
         <option value="$PROJECT_DIR$/src/pages/cash/index.js" />
-        <option value="$PROJECT_DIR$/src/pages/index.js" />
+        <option value="$PROJECT_DIR$/src/services/global.js" />
+        <option value="$PROJECT_DIR$/src/models/global.js" />
+        <option value="$PROJECT_DIR$/src/global.less" />
         <option value="$PROJECT_DIR$/src/pages/goldenEggs/index.js" />
+        <option value="$PROJECT_DIR$/src/pages/index.js" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="724" />
-    <option name="y" value="123" />
+    <option name="x" value="1069" />
+    <option name="y" value="179" />
     <option name="width" value="1755" />
     <option name="height" value="1156" />
   </component>
@@ -185,13 +173,6 @@
               <item name="jackpot" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="pages" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="jackpot" type="b2602c69:ProjectViewProjectNode" />
-              <item name="jackpot" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="pages" type="462c0819:PsiDirectoryNode" />
-              <item name="goldenEggs" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -272,16 +253,19 @@
       <workItem from="1554789732872" duration="1317000" />
       <workItem from="1554870427018" duration="911000" />
       <workItem from="1555041192184" duration="913000" />
+      <workItem from="1555050652815" duration="130000" />
+      <workItem from="1555127654714" duration="5129000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="120718000" />
+    <option name="totallyTimeSpent" value="125977000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="724" y="127" width="1755" height="1152" extended-state="0" />
+    <frame x="1069" y="179" width="1755" height="1156" extended-state="0" />
+    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.17297612" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.17297612" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -293,7 +277,7 @@
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="8" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="9" visible="true" weight="0.6738703" />
+      <window_info anchor="bottom" id="Terminal" order="9" visible="true" weight="0.29549903" />
       <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -489,13 +473,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/global.less">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="478">
-          <caret line="530" selection-start-line="530" selection-end-line="530" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/common/constant.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="300">
@@ -513,19 +490,9 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/models/global.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2750">
-          <caret line="112" column="17" selection-start-line="112" selection-start-column="6" selection-end-line="112" selection-end-column="17" />
-          <folding>
-            <element signature="e#0#47#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/services/global.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2400">
+        <state relative-caret-position="400">
           <caret line="97" column="6" selection-start-line="97" selection-start-column="6" selection-end-line="97" selection-end-column="6" />
           <folding>
             <element signature="e#0#39#0" expanded="true" />
@@ -533,20 +500,40 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/pages/index.js">
+    <entry file="file://$PROJECT_DIR$/src/assets/images/ps.png">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/global.less">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1250">
-          <caret line="54" column="7" selection-start-line="54" selection-start-column="7" selection-end-line="54" selection-end-column="7" />
+        <state relative-caret-position="256">
+          <caret line="385" selection-start-line="385" selection-end-line="385" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/models/global.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="419">
+          <caret line="115" column="42" lean-forward="true" selection-start-line="115" selection-start-column="42" selection-end-line="115" selection-end-column="42" />
           <folding>
-            <element signature="e#0#41#0" expanded="true" />
+            <element signature="e#0#47#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/pages/goldenEggs/index.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-11267">
-          <caret line="9" column="17" lean-forward="true" selection-start-line="9" selection-start-column="17" selection-end-line="9" selection-end-column="17" />
+        <state relative-caret-position="839">
+          <caret line="103" selection-start-line="103" selection-end-line="103" />
+          <folding>
+            <element signature="e#0#41#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/pages/index.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="338">
+          <caret line="89" column="26" selection-start-line="89" selection-start-column="26" selection-end-line="89" selection-end-column="26" />
           <folding>
             <element signature="e#0#41#0" expanded="true" />
           </folding>

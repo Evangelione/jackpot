@@ -20,6 +20,8 @@ class Index extends Component {
     level2: undefined,
     level3: undefined,
     single: false,
+    kv: require('@/assets/images/ps.png'),
+    bg: require('@/assets/images/jb-bg.png'),
     eggs: [{
       image: require('@/assets/images/egg frenzy.png'),
       thanks: require('@/assets/images/gd_thanks.png'),
@@ -88,6 +90,17 @@ class Index extends Component {
         name: '',
       },
     });
+    // this.props.dispatch({
+    //   type: 'global/fetchKV',
+    //   payload: {
+    //     id: this.props.location.query.activityId,
+    //   },
+    // }).then(() => {
+    //   this.setState({
+    //     kv: localStorage.getItem('kv'),
+    //     bg: localStorage.getItem('bg'),
+    //   });
+    // });
   }
 
   showModal = (single) => {
@@ -114,6 +127,12 @@ class Index extends Component {
     this.setState({
       visible: false,
       single: false,
+      level1: undefined,
+      level2: undefined,
+      level3: undefined,
+      name: '',
+      address: '',
+      pinCode: '',
     });
   };
 
@@ -144,7 +163,7 @@ class Index extends Component {
     }
     let cacheId = '';
     if (this.state.single) {
-      cacheId = this.props.goldenEggs.pageDetail.prizes[0].id;
+      cacheId = this.props.goldenEggs.pageDetail.records[0].id;
     } else {
       cacheId = this.props.global.lotteryData.hasPrize.id;
     }
@@ -455,10 +474,10 @@ class Index extends Component {
     const { name, address, pinCode } = this.state;
     console.log(lotteryData);
     return (
-      <div className='golden-bg'>
+      <div className='golden-bg' style={{ background: `url(${this.state.bg})` }}>
         <div className='egg-container'>
           <div className='title'>
-            <img src={require('@/assets/images/ps.png')} alt=""/>
+            <img src={this.state.kv} alt=""/>
           </div>
           <div className='egg-stage'>
             <img src={require('@/assets/images/stage.png')} alt=""/>
@@ -482,6 +501,10 @@ class Index extends Component {
             <div className='car-title'>
               <div className='bar'>Award-winning record</div>
             </div>
+            {pageDetail.records && pageDetail.records.length !== 0 ?
+              <Button onClick={this.showModal.bind(null, 'single')}
+                      style={{ borderColor: '#028BD7', color: '#028BD7', marginBottom: 15 }}>contact
+                details</Button> : null}
             {this.mapRecordsList()}
             {/*<div className='bg-gray'>*/}
             {/*<div className='QR-code-box'>*/}
@@ -552,14 +575,10 @@ class Index extends Component {
             {/*</div>*/}
           </div> : null}
 
-          <div className='card-container'>
+          {this.props.goldenEggs.pageDetail.prizes ? <div className='card-container'>
             <div className='car-title'>
               <div className='bar'>The prize list</div>
             </div>
-            {pageDetail.prizes && pageDetail.prizes.length !== 0 ?
-              <Button onClick={this.showModal.bind(null, 'single')}
-                      style={{ borderColor: '#028BD7', color: '#028BD7', marginBottom: 5 }}>contact
-                details</Button> : null}
             <div className='prize-list'>
               {this.mapPrizeList()}
               {/*<div className='prize'>*/}
@@ -593,7 +612,8 @@ class Index extends Component {
               {/*</div>*/}
               {/*</div>*/}
             </div>
-          </div>
+          </div> : null}
+
 
           {pageDetail.description ? <div className='card-container'>
             <div className='car-title'>
@@ -604,7 +624,6 @@ class Index extends Component {
             </div>
           </div> : null}
 
-
           {pageDetail.users ? <div className='card-container'>
             <div className='car-title'>
               <div className='bar'>The latest winners list</div>
@@ -613,14 +632,12 @@ class Index extends Component {
               {this.mapUsersList()}
             </div>
           </div> : null}
-
         </div>
 
         <Modal
           visible={this.state.visible}
           onOk={this.handleOk}
           onCancel={this.handleCancel}
-          closable={false}
           footer={null}
           maskClosable={false}
           destroyOnClose={true}

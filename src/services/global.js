@@ -98,3 +98,10 @@ export function cashLottery(phone, awardCode) {
     },
   });
 }
+
+export function fetchKV(id) {
+  return request(`${api}/api/activity?activityId=${id}`, {
+    method: 'GET',
+    credentials: 'omit',
+  });
+}

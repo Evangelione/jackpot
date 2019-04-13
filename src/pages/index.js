@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Input, Button, message, Select, Form } from 'antd';
+import { Input, Button, message, Select, Form, Modal } from 'antd';
 import styles from './index.less';
 import { connect } from 'dva';
 import { REGS } from '@/common/constant';
@@ -18,9 +18,31 @@ class Index extends Component {
     imei: '',
     postStr: '+91',
     pattern: '^[1-9]{1}[0-9]{9}$',
+    visible: false,
+    ad: '',
+    countDown: 5,
+    timeout: false,
   };
   timer = null;
   sec = 60;
+
+  componentDidMount() {
+    if (!this.props.location.query.activityId) {
+      message.error('路径没有activityId参数，无法识别活动');
+      return false;
+    }
+    this.props.dispatch({
+      type: 'global/fetchKV',
+      payload: {
+        id: this.props.location.query.activityId,
+      },
+    }).then(() => {
+      this.setState({
+        ad: localStorage.getItem('ad'),
+      });
+      this.showModal();
+    });
+  }
 
 
   getCode = () => {
@@ -52,6 +74,32 @@ class Index extends Component {
           }
         }, 1000);
       }
+    });
+  };
+
+  showModal = () => {
+    this.setState({
+      visible: true,
+    });
+    let timer = setInterval(() => {
+      if (this.state.countDown === 0) {
+        clearInterval(timer);
+        this.setState({
+          timeout: true,
+        });
+        this.handleCancel();
+        return false;
+      }
+      this.setState({
+        countDown: this.state.countDown - 1,
+      });
+    }, 1000);
+  };
+
+  handleCancel = (e) => {
+    console.log(e);
+    this.setState({
+      visible: false,
     });
   };
 
@@ -182,6 +230,25 @@ class Index extends Component {
           </Form.Item>
           <Button onClick={this.login}>LOG IN</Button>
         </Form>
+        <Modal
+          visible={this.state.visible}
+          onCancel={this.handleCancel}
+          closable={false}
+          bodyStyle={{ backgroundImage: `url(${this.state.ad})`, height: '70vh', backgroundSize: 'cover' }}
+          footer={null}
+        >
+
+          <div style={{
+            position: 'absolute',
+            top: 17,
+            right: 20,
+            fontSize: 14,
+            color: '#fff',
+            fontWeight: 'bold',
+          }}>({this.state.countDown}s)&nbsp;&nbsp;<span onClick={this.handleCancel}>Skip Ad</span>
+          </div>
+
+        </Modal>
       </div>
     );
   }
