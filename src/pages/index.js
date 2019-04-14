@@ -234,7 +234,7 @@ class Index extends Component {
           visible={this.state.visible}
           onCancel={this.handleCancel}
           closable={false}
-          bodyStyle={{ backgroundImage: `url(${this.state.ad})`, height: '70vh', backgroundSize: 'cover' }}
+          bodyStyle={{ backgroundImage: `url(${this.state.ad})`, height: '70vh', backgroundSize: 'contain' }}
           footer={null}
         >
 

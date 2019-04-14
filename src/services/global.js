@@ -105,3 +105,13 @@ export function fetchKV(id) {
     credentials: 'omit',
   });
 }
+
+export function fetchAddress(id, imei, phone) {
+  return request(`${api}/api/activity/user/get?activityId=${id}&imei=${imei}&phone=${phone}`, {
+    method: 'GET',
+    credentials: 'omit',
+    headers: {
+      token: localStorage.getItem('token'),
+    },
+  });
+}

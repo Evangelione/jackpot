@@ -12,6 +12,7 @@ export default {
     level1: [],
     level2: [],
     level3: [],
+    userAddress: null,
   },
 
   subscriptions: {
@@ -36,6 +37,8 @@ export default {
       const { data } = yield call(services.login, phone, key, code, imei, activityId);
       if (parseInt(data.code, 10) === 1) {
         localStorage.setItem('token', data.data.token);
+        localStorage.setItem('imei', imei);
+        localStorage.setItem('phone', phone);
         if (data.data.category - 0 === 1) {
           router.push({
             pathname: '/bigWheel',
@@ -117,6 +120,21 @@ export default {
         localStorage.setItem('kv', data.data.banner);
         localStorage.setItem('bg', data.data.background);
         localStorage.setItem('ad', data.data.ad);
+      } else {
+        message.error(data.msg);
+      }
+    },
+    * fetchAddress({ payload: { id, imei, phone } }, { call, put }) {
+      const { data } = yield call(services.fetchAddress, id, imei, phone);
+      if (parseInt(data.code, 10) === 1) {
+        if (data.data.hasDetail !== false) {
+          yield put({
+            type: 'save',
+            payload: {
+              userAddress: data.data.user,
+            },
+          });
+        }
       } else {
         message.error(data.msg);
       }

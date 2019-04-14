@@ -90,17 +90,39 @@ class Index extends Component {
         name: '',
       },
     });
-    // this.props.dispatch({
-    //   type: 'global/fetchKV',
-    //   payload: {
-    //     id: this.props.location.query.activityId,
-    //   },
-    // }).then(() => {
-    //   this.setState({
-    //     kv: localStorage.getItem('kv'),
-    //     bg: localStorage.getItem('bg'),
-    //   });
-    // });
+    this.props.dispatch({
+      type: 'global/fetchKV',
+      payload: {
+        id: this.props.location.query.activityId,
+      },
+    }).then(() => {
+      this.setState({
+        kv: localStorage.getItem('kv'),
+        bg: localStorage.getItem('bg'),
+      });
+    });
+    this.props.dispatch({
+      type: 'global/fetchAddress',
+      payload: {
+        id: activityId,
+        imei: localStorage.getItem('imei'),
+        phone: localStorage.getItem('phone'),
+      },
+    }).then(() => {
+      const { pageDetail } = this.props.goldenEggs;
+      if (this.props.global.userAddress === null) {
+        pageDetail.records && pageDetail.records.length && this.showModal('single');
+      } else {
+        this.setState({
+          level1: this.props.global.userAddress.address.split('-')[0],
+          level2: this.props.global.userAddress.address.split('-')[1],
+          level3: this.props.global.userAddress.address.split('-')[2],
+          address: this.props.global.userAddress.address.split('-')[3],
+          name: this.props.global.userAddress.name,
+          pinCode: this.props.global.userAddress.pinCode,
+        });
+      }
+    });
   }
 
   showModal = (single) => {
@@ -127,12 +149,12 @@ class Index extends Component {
     this.setState({
       visible: false,
       single: false,
-      level1: undefined,
-      level2: undefined,
-      level3: undefined,
-      name: '',
-      address: '',
-      pinCode: '',
+      level1: this.props.global.userAddress.address.split('-')[0],
+      level2: this.props.global.userAddress.address.split('-')[1],
+      level3: this.props.global.userAddress.address.split('-')[2],
+      address: this.props.global.userAddress.address.split('-')[3],
+      name: this.props.global.userAddress.name,
+      pinCode: this.props.global.userAddress.pinCode,
     });
   };
 
@@ -431,6 +453,11 @@ class Index extends Component {
   };
 
   changeField = (field, e) => {
+    if (field === 'pinCode') {
+      if (e.target.value.length > 6) {
+        return false;
+      }
+    }
     this.setState({
       [field]: e.target.value,
     });
