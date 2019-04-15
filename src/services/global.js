@@ -99,6 +99,22 @@ export function cashLottery(phone, awardCode) {
   });
 }
 
+export function smsLottery(id, key, phone, awardCode) {
+  let formData = new FormData();
+  formData.append('id', id);
+  formData.append('key', key);
+  formData.append('phone', phone);
+  formData.append('code', awardCode);
+  return request(`${api}/api/activity/user/sms/redeem`, {
+    method: 'POST',
+    credentials: 'omit',
+    body: formData,
+    headers: {
+      token: localStorage.getItem('token'),
+    },
+  });
+}
+
 export function fetchKV(id) {
   return request(`${api}/api/activity?activityId=${id}`, {
     method: 'GET',

@@ -234,17 +234,21 @@ class Index extends Component {
           visible={this.state.visible}
           onCancel={this.handleCancel}
           closable={false}
-          bodyStyle={{ backgroundImage: `url(${this.state.ad})`, height: '70vh', backgroundSize: 'contain' }}
+          bodyStyle={{
+            backgroundImage: `url(${this.state.ad})`,
+            height: '70vh',
+            backgroundSize: 'contain',
+            backgroundRepeat: 'no-repeat',
+            backgroundPosition: 'center center',
+          }}
           footer={null}
         >
-
           <div style={{
             position: 'absolute',
-            top: 17,
-            right: 20,
+            top: 8,
+            right: 10,
             fontSize: 14,
-            color: '#fff',
-            fontWeight: 'bold',
+            color: '#666',
           }}>({this.state.countDown}s)&nbsp;&nbsp;<span onClick={this.handleCancel}>Skip Ad</span>
           </div>
 

@@ -13,6 +13,8 @@ export default {
     level2: [],
     level3: [],
     userAddress: null,
+    smsId: '',
+    verification: '',
   },
 
   subscriptions: {
@@ -109,10 +111,34 @@ export default {
     },
     * cashLottery({ payload: { phone, awardCode } }, { call, put }) {
       const { data } = yield call(services.cashLottery, phone, awardCode);
-      parseInt(data.code, 10) === 1 ?
-        message.success(data.msg)
-        :
+      if (parseInt(data.code, 10) === 1) {
+        if (data.data.msg === '兑奖需要短信验证') {
+          yield put({
+            type: 'save',
+            payload: {
+              verification: data.data.key,
+              smsId: data.data.id,
+            },
+          });
+        } else {
+          message.success(data.msg);
+        }
+      } else {
         message.error(data.msg);
+      }
+    },
+    * smsLottery({ payload: { id, key, phone, awardCode, callback } }, { call, put }) {
+      const { data } = yield call(services.smsLottery, id, key, phone, awardCode);
+      if (parseInt(data.code, 10) === 1) {
+        if (data.msg === '验证码错误') {
+          message.success(data.msg);
+        } else {
+          yield call(callback);
+          message.success(data.msg);
+        }
+      } else {
+        message.error(data.msg);
+      }
     },
     * fetchKV({ payload: { id } }, { call, put }) {
       const { data } = yield call(services.fetchKV, id);

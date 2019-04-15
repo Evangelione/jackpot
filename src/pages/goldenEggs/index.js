@@ -110,7 +110,7 @@ class Index extends Component {
       },
     }).then(() => {
       const { pageDetail } = this.props.goldenEggs;
-      if (this.props.global.userAddress === null) {
+      if (!this.props.global.userAddress) {
         pageDetail.records && pageDetail.records.length && this.showModal('single');
       } else {
         this.setState({
@@ -145,17 +145,25 @@ class Index extends Component {
   };
 
   handleCancel = (e) => {
+    console.log(this.props.global.userAddress);
     console.log(e);
-    this.setState({
-      visible: false,
-      single: false,
-      level1: this.props.global.userAddress.address.split('-')[0],
-      level2: this.props.global.userAddress.address.split('-')[1],
-      level3: this.props.global.userAddress.address.split('-')[2],
-      address: this.props.global.userAddress.address.split('-')[3],
-      name: this.props.global.userAddress.name,
-      pinCode: this.props.global.userAddress.pinCode,
-    });
+    if (this.props.global.userAddress) {
+      this.setState({
+        visible: false,
+        single: false,
+        level1: this.props.global.userAddress.address.split('-')[0],
+        level2: this.props.global.userAddress.address.split('-')[1],
+        level3: this.props.global.userAddress.address.split('-')[2],
+        address: this.props.global.userAddress.address.split('-')[3],
+        name: this.props.global.userAddress.name,
+        pinCode: this.props.global.userAddress.pinCode,
+      });
+    } else {
+      this.setState({
+        visible: false,
+        single: false,
+      });
+    }
   };
 
   showModal2 = () => {
@@ -183,6 +191,10 @@ class Index extends Component {
       message.error('请填写完整信息');
       return false;
     }
+    if (this.state.pinCode.length < 6) {
+      message.error('pinCode必须为6位');
+      return false;
+    }
     let cacheId = '';
     if (this.state.single) {
       cacheId = this.props.goldenEggs.pageDetail.records[0].id;
@@ -208,6 +220,14 @@ class Index extends Component {
           activityId,
         },
       });
+      this.props.dispatch({
+        type: 'global/fetchAddress',
+        payload: {
+          id: activityId,
+          imei: localStorage.getItem('imei'),
+          phone: localStorage.getItem('phone'),
+        },
+      })
       // this.setState({
       //   eggs: [{
       //     image: require('@/assets/images/egg frenzy.png'),
@@ -495,6 +515,10 @@ class Index extends Component {
     });
   };
 
+  blurPinCode = () => {
+
+  };
+
   render() {
     const { pageDetail } = this.props.goldenEggs;
     const { lotteryData, luckyTimes } = this.props.global;
@@ -710,7 +734,7 @@ class Index extends Component {
                    onChange={this.changeField.bind(null, 'address')}/>
             <Input style={{ border: 'none', backgroundColor: '#f5f5f5' }}
                    placeholder='Enter the PIN Code' value={pinCode}
-                   onChange={this.changeField.bind(null, 'pinCode')}/>
+                   onChange={this.changeField.bind(null, 'pinCode')} onBlur={this.blurPinCode}/>
             <Button type='primary' style={{
               width: 135,
               fontSize: 18,
