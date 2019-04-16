@@ -237,9 +237,9 @@ class Index extends Component {
           bodyStyle={{
             backgroundImage: `url(${this.state.ad})`,
             height: '70vh',
-            backgroundSize: 'contain',
             backgroundRepeat: 'no-repeat',
-            backgroundPosition: 'center center',
+            backgroundSize: '100% 100%',
+            backgroundAttachment: 'fixed',
           }}
           footer={null}
         >
