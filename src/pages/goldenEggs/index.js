@@ -93,9 +93,25 @@ class Index extends Component {
       }).then(() => {
         const { pageDetail } = this.props.goldenEggs;
         if (!this.props.global.userAddress) {
+          this.setState({
+            level1: undefined,
+            level2: undefined,
+            level3: undefined,
+            name: '',
+            address: '',
+            pinCode: '',
+          });
           pageDetail.records && pageDetail.records.length !== 0 && this.showModal('single');
         } else {
           if (!this.props.global.userAddress.address) {
+            this.setState({
+              level1: undefined,
+              level2: undefined,
+              level3: undefined,
+              name: '',
+              address: '',
+              pinCode: '',
+            });
             return false;
           }
           this.setState({

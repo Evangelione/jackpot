@@ -13,7 +13,7 @@ export default {
   },
 
   effects: {
-    * fetchPageDetail({ payload: { token, activityId } }, { call, put }) {
+    * fetchPageDetail({ payload: { token, activityId ,callback} }, { call, put }) {
       const { data } = yield call(services.fetchPageDetail, token, activityId);
       if (parseInt(data.code, 10) === 1) {
         yield put({
@@ -29,6 +29,7 @@ export default {
           },
         });
       } else {
+        callback(true)
         message.error(data.msg);
       }
     },
