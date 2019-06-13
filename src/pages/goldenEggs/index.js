@@ -548,9 +548,8 @@ class Index extends Component {
 
   render() {
     const { pageDetail } = this.props.goldenEggs;
-    const { lotteryData, luckyTimes } = this.props.global;
+    const { luckyTimes } = this.props.global;
     const { name, address, pinCode } = this.state;
-    console.log(lotteryData);
     return (
       <div className='golden-bg' style={{ background: `url(${this.state.bg})` }}>
         <div className='egg-container'>
@@ -568,7 +567,7 @@ class Index extends Component {
           </div>
           <div className='detail'>
             <div className='bar'>
-              You have <span>{luckyTimes}</span> raffle chances
+              You have <span>{luckyTimes || 0}</span> raffle chances
             </div>
           </div>
         </div>
@@ -584,73 +583,6 @@ class Index extends Component {
                       style={{ borderColor: '#028BD7', color: '#028BD7', marginBottom: 15 }}>contact
                 details</Button> : null}
             {this.mapRecordsList()}
-            {/*<div className='bg-gray'>*/}
-            {/*<div className='QR-code-box'>*/}
-            {/*<div className='QR-code'>*/}
-            {/*<img src={require('@/assets/images/er.png')} alt=""/>*/}
-            {/*</div>*/}
-            {/*<div className='QR-detail'>*/}
-            {/*<div>Prize: <span className='red'>vivo X23</span></div>*/}
-            {/*<div>Redeem code: <span className='red-bold'>876524</span></div>*/}
-            {/*<div>[2019-05-12 18:23:34]</div>*/}
-            {/*</div>*/}
-            {/*</div>*/}
-            {/*<div className='QR-desc'>*/}
-            {/*In sit amet condimentum felis, quis finibus sapien. Nunc felis nisi, pellentesque accumsan diam ut,*/}
-            {/*accumsan porta turpis. Pellentesque*/}
-            {/*</div>*/}
-            {/*</div>*/}
-
-            {/*<div className='bg-gray'>*/}
-            {/*<div className='QR-code-box'>*/}
-            {/*<div className='QR-code'>*/}
-            {/*<img src={require('@/assets/images/er.png')} alt=""/>*/}
-            {/*</div>*/}
-            {/*<div className='QR-detail'>*/}
-            {/*<div>Prize: <span className='red'>vivo X23</span></div>*/}
-            {/*<div>Redeem code: <span className='red-bold'>876524</span></div>*/}
-            {/*<div>[2019-05-12 18:23:34]</div>*/}
-            {/*</div>*/}
-            {/*</div>*/}
-            {/*<div className='QR-desc'>*/}
-            {/*In sit amet condimentum felis, quis finibus sapien. Nunc felis nisi, pellentesque accumsan diam ut,*/}
-            {/*accumsan porta turpis. Pellentesque*/}
-            {/*</div>*/}
-            {/*</div>*/}
-
-            {/*<div className='bg-gray'>*/}
-            {/*<div className='QR-code-box'>*/}
-            {/*<div className='QR-code'>*/}
-            {/*<img src={require('@/assets/images/er.png')} alt=""/>*/}
-            {/*</div>*/}
-            {/*<div className='QR-detail'>*/}
-            {/*<div>Prize: <span className='red'>vivo X23</span></div>*/}
-            {/*<div>Redeem code: <span className='red-bold'>876524</span></div>*/}
-            {/*<div>[2019-05-12 18:23:34]</div>*/}
-            {/*</div>*/}
-            {/*</div>*/}
-            {/*<div className='QR-desc'>*/}
-            {/*In sit amet condimentum felis, quis finibus sapien. Nunc felis nisi, pellentesque accumsan diam ut,*/}
-            {/*accumsan porta turpis. Pellentesque*/}
-            {/*</div>*/}
-            {/*</div>*/}
-
-            {/*<div className='bg-gray'>*/}
-            {/*<div className='QR-code-box'>*/}
-            {/*<div className='QR-code'>*/}
-            {/*<img src={require('@/assets/images/er.png')} alt=""/>*/}
-            {/*</div>*/}
-            {/*<div className='QR-detail'>*/}
-            {/*<div>Prize: <span className='red'>vivo X23</span></div>*/}
-            {/*<div>Redeem code: <span className='red-bold'>876524</span></div>*/}
-            {/*<div>[2019-05-12 18:23:34]</div>*/}
-            {/*</div>*/}
-            {/*</div>*/}
-            {/*<div className='QR-desc'>*/}
-            {/*In sit amet condimentum felis, quis finibus sapien. Nunc felis nisi, pellentesque accumsan diam ut,*/}
-            {/*accumsan porta turpis. Pellentesque*/}
-            {/*</div>*/}
-            {/*</div>*/}
           </div> : null}
 
           {this.props.goldenEggs.pageDetail.prizes ? <div className='card-container'>
@@ -659,36 +591,6 @@ class Index extends Component {
             </div>
             <div className='prize-list'>
               {this.mapPrizeList()}
-              {/*<div className='prize'>*/}
-              {/*<div>*/}
-              {/*<img src={require('@/assets/images/vergil.jpg')} alt=""/>*/}
-              {/*</div>*/}
-              {/*<div>*/}
-              {/*<div>First Prize</div>*/}
-              {/*<div>Vergil</div>*/}
-              {/*<div>Quantity: 100</div>*/}
-              {/*</div>*/}
-              {/*</div>*/}
-              {/*<div className='prize'>*/}
-              {/*<div>*/}
-              {/*<img src={require('@/assets/images/vergil.jpg')} alt=""/>*/}
-              {/*</div>*/}
-              {/*<div>*/}
-              {/*<div>First Prize</div>*/}
-              {/*<div>Vergil</div>*/}
-              {/*<div>Quantity: 100</div>*/}
-              {/*</div>*/}
-              {/*</div>*/}
-              {/*<div className='prize'>*/}
-              {/*<div>*/}
-              {/*<img src={require('@/assets/images/vergil.jpg')} alt=""/>*/}
-              {/*</div>*/}
-              {/*<div>*/}
-              {/*<div>First Prize</div>*/}
-              {/*<div>Vergil</div>*/}
-              {/*<div>Quantity: 100</div>*/}
-              {/*</div>*/}
-              {/*</div>*/}
             </div>
           </div> : null}
 

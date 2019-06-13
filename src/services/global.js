@@ -131,3 +131,24 @@ export function fetchAddress(id, imei, phone) {
     },
   });
 }
+
+export function fetchPrizeList(id) {
+  return request(`${api}/api/lottery/prizes?activityId=${id}`, {
+    method: 'GET',
+    credentials: 'omit',
+    headers: {
+      token: localStorage.getItem('token'),
+    },
+  });
+}
+
+
+export function fetchPageDetail(token, activityId) {
+  return request(`${api}/api/lottery/index?activityId=${activityId}`, {
+    method: 'GET',
+    headers: {
+      token: token,
+    },
+    credentials: 'omit',
+  });
+}

@@ -15,6 +15,8 @@ export default {
     userAddress: null,
     smsId: '',
     verification: '',
+    prizeList: [],
+    pageDetail: {}
   },
 
   subscriptions: {
@@ -165,6 +167,36 @@ export default {
         message.error(data.msg);
       }
     },
+    * fetchPrizeList({ payload: { id } }, { call, put }) {
+      const { data } = yield call(services.fetchPrizeList, id);
+      if (parseInt(data.code, 10) === 1) {
+        if (data.data.hasDetail !== false) {
+          yield put({
+            type: 'save',
+            payload: {
+              prizeList: data.data,
+            },
+          });
+        }
+      } else {
+        message.error(data.msg);
+      }
+    },
+    * fetchPageDetail({ payload: { token, activityId, callback } }, { call, put }) {
+      const { data } = yield call(services.fetchPageDetail, token, activityId);
+      if (parseInt(data.code, 10) === 1) {
+        yield put({
+          type: 'save',
+          payload: {
+            pageDetail: data.data,
+            luckyTimes: data.data.luckyTimes,
+          },
+        });
+      } else {
+        callback(true);
+        message.error(data.msg);
+      }
+    },
   },
 
   reducers: {
@@ -172,5 +204,4 @@ export default {
       return { ...state, ...action.payload };
     },
   },
-
 };

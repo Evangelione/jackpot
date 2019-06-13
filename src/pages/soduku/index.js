@@ -1,34 +1,124 @@
 import React, { Component } from 'react';
-import { Modal, Input, Button } from 'antd';
+import { Modal, Input, Button, Select, message } from 'antd';
+import { connect } from 'dva';
+import moment from 'moment';
 
+const Option = Select.Option;
 const order = [0, 1, 2, 4, 7, 6, 5, 3];
+const HEIGHT = window.screen.width;
 
+@connect(({ global }) => ({
+  global,
+}))
 class Index extends Component {
   state = {
     visible: false,
     visible2: false,
+    level1: undefined,
+    level2: undefined,
+    level3: undefined,
+    single: false,
+    name: '',
+    address: '',
+    pinCode: '',
+    prizeList: [],
   };
 
   timer = null;
   bReady = false;
-  prizeList = [
-    require('@/assets/images/vergil.jpg'),
-    require('@/assets/images/vergil.jpg'),
-    require('@/assets/images/vergil.jpg'),
-    require('@/assets/images/vergil.jpg'),
-    require('@/assets/images/go.png'),
-    require('@/assets/images/vergil.jpg'),
-    require('@/assets/images/vergil.jpg'),
-    require('@/assets/images/vergil.jpg'),
-    require('@/assets/images/vergil.jpg'),
-  ];
 
-  showModal = () => {
+  componentDidMount() {
+    const { activityId } = this.props.location.query;
+    this.props.dispatch({
+      type: 'global/fetchPrizeList',
+      payload: {
+        id: activityId,
+      },
+    }).then(() => {
+      const arr = this.props.global.prizeList;
+      for (let x = arr.length; x < 8; x++) {
+        arr.push({ name: '谢谢参与', image: require('@/assets/images/vergil.jpg') });
+      }
+      const arr2 = arr.sort(function() {
+        return 0.5 - Math.random();
+      });
+      arr2.splice(4, 0, {
+        name: 'go',
+        image: require('@/assets/images/go.png'),
+        id: 'cache',
+      });
+      this.setState({
+        prizeList: arr2,
+      });
+    });
+    this.props.dispatch({
+      type: 'global/fetchPageDetail',
+      payload: {
+        token: localStorage.getItem('token'),
+        activityId,
+      },
+    }).then(() => {
+      this.props.dispatch({
+        type: 'global/fetchAddress',
+        payload: {
+          id: activityId,
+          imei: localStorage.getItem('imei'),
+          phone: localStorage.getItem('phone'),
+        },
+      }).then(() => {
+        const { pageDetail } = this.props.global;
+        if (!this.props.global.userAddress) {
+          this.setState({
+            level1: undefined,
+            level2: undefined,
+            level3: undefined,
+            name: '',
+            address: '',
+            pinCode: '',
+          });
+          pageDetail.records && pageDetail.records.length !== 0 && this.showModal('single');
+        } else {
+          if (!this.props.global.userAddress.address) {
+            this.setState({
+              level1: undefined,
+              level2: undefined,
+              level3: undefined,
+              name: '',
+              address: '',
+              pinCode: '',
+            });
+            return false;
+          }
+          this.setState({
+            level1: this.props.global.userAddress.address.split('-')[0],
+            level2: this.props.global.userAddress.address.split('-')[1],
+            level3: this.props.global.userAddress.address.split('-')[2],
+            address: this.props.global.userAddress.address.split('-')[3],
+            name: this.props.global.userAddress.name,
+            pinCode: this.props.global.userAddress.pinCode,
+          });
+        }
+      });
+    });
+    this.props.dispatch({
+      type: 'global/fetchCascader',
+      payload: {
+        level: 1,
+        name: '',
+      },
+    });
+  }
+
+  showModal = (single) => {
     this.setState({
       visible: true,
     });
+    if (single === 'single') {
+      this.setState({
+        single: true,
+      });
+    }
   };
-
   handleOk = (e) => {
     console.log(e);
     this.setState({
@@ -64,8 +154,47 @@ class Index extends Component {
   };
 
   submit = () => {
-    this.handleCancel();
-    this.showModal2();
+    if (!this.state.name || !this.state.address || !this.state.level1 || !this.state.level2 || !this.state.level3 || !this.state.pinCode) {
+      message.error('请填写完整信息');
+      return false;
+    }
+    if (this.state.pinCode.length < 6) {
+      message.error('pinCode必须为6位');
+      return false;
+    }
+    let cacheId = '';
+    if (this.state.single) {
+      cacheId = this.props.global.pageDetail.records[0].id;
+    } else {
+      cacheId = this.props.global.lotteryData.hasPrize.id;
+    }
+    this.props.dispatch({
+      type: 'global/postUserData',
+      payload: {
+        name: this.state.name,
+        address: this.state.level1 + '-' + this.state.level2 + '-' + this.state.level3 + '-' + this.state.address,
+        id: cacheId,
+        pinCode: this.state.pinCode,
+      },
+    }).then(() => {
+      this.handleCancel();
+      const { activityId } = this.props.location.query;
+      this.props.dispatch({
+        type: 'global/fetchPageDetail',
+        payload: {
+          token: localStorage.getItem('token'),
+          activityId,
+        },
+      });
+      this.props.dispatch({
+        type: 'global/fetchAddress',
+        payload: {
+          id: activityId,
+          imei: localStorage.getItem('imei'),
+          phone: localStorage.getItem('phone'),
+        },
+      });
+    });
   };
 
   lottery = (num) => {
@@ -101,15 +230,121 @@ class Index extends Component {
   aClick = () => {
     if (this.bReady) return false;
     this.bReady = true;
-    let num = this.random(1, 9);
-    this.lottery(num);
+    const { activityId } = this.props.location.query;
+    this.props.dispatch({
+      type: 'global/lottery',
+      payload: {
+        activityId,
+        token: localStorage.getItem('token'),
+      },
+    }).then(() => {
+      if (this.props.global.lotteryData.prize && this.props.global.lotteryData.prize.id) {
+        // 中奖判断
+        let prizeIndex = this.state.prizeList.findIndex((item) => {
+          return item.id === this.props.global.lotteryData.prize.id;
+        });
+        this.lottery(prizeIndex + 1);
+      } else if (this.props.global.lotteryData.prize === null) {
+        let prizeIndex = parseInt(Math.random() * this.state.prizeList.length);
+        console.log(prizeIndex)
+        while(this.state.prizeList[prizeIndex].id) {
+          prizeIndex = parseInt(Math.random() * this.state.prizeList.length);
+        }
+        this.lottery(prizeIndex + 1);
+      } else {
+        message.error(this.props.global.lotteryData);
+      }
+    });
   };
 
   random = (n, m) => {
     return parseInt((m - n) * Math.random() + n);
   };
 
+  mapRecordsList = () => {
+    return this.props.global.pageDetail.records && this.props.global.pageDetail.records.map((value, index) => {
+      return <div className='bg-gray' key={index}>
+        <div className='QR-code-box'>
+          <div className='QR-code'>
+            <img src={value.prize.image} alt="" style={{ minWidth: 80, minHeight: 80, width: '100%' }}/>
+          </div>
+          <div className='QR-detail'>
+            <div>Prize: <span className='red'>{value.prize.name}</span></div>
+            <div>Redeem code: <span className='red-bold'>{value.awardCode}</span></div>
+            <div>[{moment(value.createtime).format('YYYY-MM-DD HH:mm:ss')}]</div>
+          </div>
+        </div>
+        <div className='QR-desc'>
+          {value.prize.description}
+        </div>
+      </div>;
+    });
+  };
+
+  mapPrizeList = () => {
+    return this.props.global.pageDetail.prizes && this.props.global.pageDetail.prizes.map((value, index) => {
+      return <div className='prize' key={index}>
+        <div>
+          <div style={{
+            background: `url(${value.image}) no-repeat center center`,
+            backgroundSize: 'cover',
+            height: HEIGHT / 3,
+          }}/>
+        </div>
+        <div>
+          <div>{value.title}</div>
+          <div>{value.name}</div>
+          <div>{value.amount}</div>
+        </div>
+      </div>;
+    });
+  };
+
+  mapUsersList = () => {
+    return this.props.global.pageDetail.users && this.props.global.pageDetail.users.map((value, index) => {
+      return <div className='winners-item' key={index}>
+        <div className='name'>{value.name || '****'}</div>
+        <div className='code'>{value.phone.substr(0, 6) + ' ****'}</div>
+        <div className='prize'>{value.prize.name}</div>
+        <div className='time'>{value.createtime.substr(0, 10)}</div>
+      </div>;
+    });
+  };
+
+  changeField = (field, e) => {
+    if (field === 'pinCode') {
+      if (e.target.value.length > 6) {
+        return false;
+      }
+    }
+    this.setState({
+      [field]: e.target.value,
+    });
+  };
+
+  selectAddress = (level, name) => {
+    this.props.dispatch({
+      type: 'global/fetchCascader',
+      payload: {
+        level,
+        name,
+      },
+    });
+    this.setState({
+      [`level${level - 1}`]: name,
+    });
+  };
+
+  mapAddressItem = (arr) => {
+    return arr.map((item, index) => {
+      return <Option value={item.value} key={index}>{item.label}</Option>;
+    });
+  };
+
   render() {
+    const { pageDetail } = this.props.global;
+    const { luckyTimes } = this.props.global;
+    const { name, address, pinCode } = this.state;
     return (
       <div style={{ backgroundColor: '#69C3FF' }}>
         <div className='sudoku-container'>
@@ -122,15 +357,15 @@ class Index extends Component {
             {/*<img src={require('@/assets/images/go.png')} onClick={this.showModal} alt=""/>*/}
             {/*</div>*/}
             <div className='sudoku-start-box' id='container'>
-              {this.prizeList.map((value, index) => {
+              {this.state.prizeList.map((value, index) => {
                 if (index === 4) {
                   return <span style={{ backgroundColor: 'transparent', display: 'block' }} key={index}>
-                    <img src={value} style={{ width: '100%', height: '100%' }}
+                    <img src={value.image} style={{ width: '100%', height: '100%' }}
                          onClick={this.aClick} alt=""/>
                   </span>;
                 }
                 return <div key={index}>
-                  <img src={value} alt=""/>
+                  <img src={value.image} alt=""/>
                 </div>;
               })}
             </div>
@@ -138,7 +373,7 @@ class Index extends Component {
           <img src={require('@/assets/images/zz.png')} className='sudoku-mask' alt=""/>
           <div className='detail'>
             <div className='bar'>
-              You have <span>3</span> raffle chances
+              You have <span>{luckyTimes || 0}</span> raffle chances
             </div>
           </div>
         </div>
@@ -146,229 +381,105 @@ class Index extends Component {
         <div className='padding-container'>
 
 
-          <div className='card-container'>
+          {pageDetail.records && pageDetail.records.length ? <div className='card-container'>
             <div className='car-title'>
               <div className='bar'>Award-winning record</div>
             </div>
-            <div className='bg-gray'>
-              <div className='QR-code-box'>
-                <div className='QR-code'>
-                  <img src={require('@/assets/images/er.png')} alt=""/>
-                </div>
-                <div className='QR-detail'>
-                  <div>Prize: <span className='red'>vivo X23</span></div>
-                  <div>Redeem code: <span className='red-bold'>876524</span></div>
-                  <div>[2019-05-12 18:23:34]</div>
-                </div>
-              </div>
-              <div className='QR-desc'>
-                In sit amet condimentum felis, quis finibus sapien. Nunc felis nisi, pellentesque accumsan diam ut,
-                accumsan porta turpis. Pellentesque
-              </div>
-            </div>
-
-            <div className='bg-gray'>
-              <div className='QR-code-box'>
-                <div className='QR-code'>
-                  <img src={require('@/assets/images/er.png')} alt=""/>
-                </div>
-                <div className='QR-detail'>
-                  <div>Prize: <span className='red'>vivo X23</span></div>
-                  <div>Redeem code: <span className='red-bold'>876524</span></div>
-                  <div>[2019-05-12 18:23:34]</div>
-                </div>
-              </div>
-              <div className='QR-desc'>
-                In sit amet condimentum felis, quis finibus sapien. Nunc felis nisi, pellentesque accumsan diam ut,
-                accumsan porta turpis. Pellentesque
-              </div>
-            </div>
-
-            <div className='bg-gray'>
-              <div className='QR-code-box'>
-                <div className='QR-code'>
-                  <img src={require('@/assets/images/er.png')} alt=""/>
-                </div>
-                <div className='QR-detail'>
-                  <div>Prize: <span className='red'>vivo X23</span></div>
-                  <div>Redeem code: <span className='red-bold'>876524</span></div>
-                  <div>[2019-05-12 18:23:34]</div>
-                </div>
-              </div>
-              <div className='QR-desc'>
-                In sit amet condimentum felis, quis finibus sapien. Nunc felis nisi, pellentesque accumsan diam ut,
-                accumsan porta turpis. Pellentesque
-              </div>
-            </div>
-
-            <div className='bg-gray'>
-              <div className='QR-code-box'>
-                <div className='QR-code'>
-                  <img src={require('@/assets/images/er.png')} alt=""/>
-                </div>
-                <div className='QR-detail'>
-                  <div>Prize: <span className='red'>vivo X23</span></div>
-                  <div>Redeem code: <span className='red-bold'>876524</span></div>
-                  <div>[2019-05-12 18:23:34]</div>
-                </div>
-              </div>
-              <div className='QR-desc'>
-                In sit amet condimentum felis, quis finibus sapien. Nunc felis nisi, pellentesque accumsan diam ut,
-                accumsan porta turpis. Pellentesque
-              </div>
-            </div>
-          </div>
+            {pageDetail.records && pageDetail.records.length !== 0 ?
+              <Button onClick={this.showModal.bind(null, 'single')}
+                      style={{ borderColor: '#028BD7', color: '#028BD7', marginBottom: 15 }}>contact
+                details</Button> : null}
+            {this.mapRecordsList()}
+          </div> : null}
 
 
-          <div className='card-container'>
+          {this.props.global.pageDetail.prizes ? <div className='card-container'>
             <div className='car-title'>
               <div className='bar'>The prize list</div>
             </div>
             <div className='prize-list'>
-              <div className='prize'>
-                <div>
-                  <img src={require('@/assets/images/vergil.jpg')} alt=""/>
-                </div>
-                <div>
-                  <div>First Prize</div>
-                  <div>Vergil</div>
-                  <div>Quantity: 100</div>
-                </div>
-              </div>
-              <div className='prize'>
-                <div>
-                  <img src={require('@/assets/images/vergil.jpg')} alt=""/>
-                </div>
-                <div>
-                  <div>First Prize</div>
-                  <div>Vergil</div>
-                  <div>Quantity: 100</div>
-                </div>
-              </div>
-              <div className='prize'>
-                <div>
-                  <img src={require('@/assets/images/vergil.jpg')} alt=""/>
-                </div>
-                <div>
-                  <div>First Prize</div>
-                  <div>Vergil</div>
-                  <div>Quantity: 100</div>
-                </div>
-              </div>
+              {this.mapPrizeList()}
             </div>
-          </div>
+          </div> : null}
 
-          <div className='card-container'>
+
+          {pageDetail.description ? <div className='card-container'>
             <div className='car-title'>
               <div className='bar'>Event description</div>
             </div>
             <div className='bg-gray'>
-              Vestibulum pharetra dui ut erat venenatis, in vulputate mi varius. Integer sed sollicitudin felis. Morbi
-              mauris sem, pellentesque sit amet eleifend sed, egestas ac est. Phasellus non dolor vitae
+              {pageDetail.description}
             </div>
-          </div>
+          </div> : null}
 
-          <div className='card-container'>
+          {pageDetail.users ? <div className='card-container'>
             <div className='car-title'>
               <div className='bar'>The latest winners list</div>
             </div>
             <div className='bg-gray' style={{ padding: '6px 2px' }}>
-              <div className='winners-item'>
-                <div className='name'>Richard ****</div>
-                <div className='code'>751360 ****</div>
-                <div className='prize'>vivo X23</div>
-                <div className='time'>2019-05-12</div>
-              </div>
-              <div className='winners-item'>
-                <div className='name'>Richard ****</div>
-                <div className='code'>751360 ****</div>
-                <div className='prize'>vivo X23</div>
-                <div className='time'>2019-05-12</div>
-              </div>
-              <div className='winners-item'>
-                <div className='name'>Richard ****</div>
-                <div className='code'>751360 ****</div>
-                <div className='prize'>vivo X23</div>
-                <div className='time'>2019-05-12</div>
-              </div>
+              {this.mapUsersList()}
             </div>
-          </div>
+          </div> : null}
         </div>
 
         <Modal
           visible={this.state.visible}
           onOk={this.handleOk}
           onCancel={this.handleCancel}
-          closable={false}
           footer={null}
           maskClosable={false}
+          destroyOnClose={true}
           style={{ top: '10%' }}
         >
           <div className='blue-bold' style={{ fontSize: 26, textAlign: 'center', marginBottom: 15 }}>You are the
             winner
           </div>
-          <div style={{
-            textAlign: 'center',
-            fontSize: 16,
-            fontWeight: 600,
-            marginBottom: 5,
-            color: '#000',
-          }}>Congratulations on
-            winning a <span className='red-bold'>vivo X23</span></div>
-          <div style={{ textAlign: 'center', fontSize: 16, fontWeight: 600, color: '#000' }}>Redeem Code <span
-            className='red-bold'>876524</span></div>
-
-          <div className='gray-box'>
-            <img src={require('@/assets/images/vergil.jpg')} alt=""/>
-          </div>
-
-          <div style={{ padding: '0 8%', textAlign: 'center' }}>
-            <Input style={{ margin: '10px 0', height: 40, border: 'none', backgroundColor: '#f5f5f5' }}
-                   placeholder='Please enter your name'/>
-            <Input style={{ height: 40, border: 'none', backgroundColor: '#f5f5f5' }}
-                   placeholder='Please enter your detailed address'/>
+          <div style={{ padding: '0 8%', textAlign: 'center' }} id='selectCustom'>
+            <Input style={{ margin: '10px 0', border: 'none', backgroundColor: '#f5f5f5' }}
+                   placeholder='Please enter your name' value={name} onChange={this.changeField.bind(null, 'name')}/>
+            <Select value={this.state.level1} style={{
+              width: '100%',
+              border: 'none',
+              backgroundColor: '#f5f5f5',
+              borderRadius: 4,
+              color: '#000',
+              marginBottom: 10,
+            }} onChange={this.selectAddress.bind(null, 2)} placeholder='Select State'>
+              {this.mapAddressItem(this.props.global.level1)}
+            </Select>
+            <Select value={this.state.level2} style={{
+              width: '100%',
+              border: 'none',
+              backgroundColor: '#f5f5f5',
+              borderRadius: 4,
+              color: '#000',
+              marginBottom: 10,
+            }} onChange={this.selectAddress.bind(null, 3)} placeholder='Select District'>
+              {this.mapAddressItem(this.props.global.level2)}
+            </Select>
+            <Select value={this.state.level3} style={{
+              width: '100%',
+              border: 'none',
+              backgroundColor: '#f5f5f5',
+              borderRadius: 4,
+              color: '#000',
+            }} onChange={this.selectAddress.bind(null, 4)} placeholder='Select CityTown'>
+              {this.mapAddressItem(this.props.global.level3)}
+            </Select>
+            <Input style={{ margin: '10px 0', border: 'none', backgroundColor: '#f5f5f5' }}
+                   placeholder='Enter the detailed address' value={address}
+                   onChange={this.changeField.bind(null, 'address')}/>
+            <Input style={{ border: 'none', backgroundColor: '#f5f5f5' }}
+                   placeholder='Enter the PIN Code' value={pinCode}
+                   onChange={this.changeField.bind(null, 'pinCode')} onBlur={this.blurPinCode}/>
             <Button type='primary' style={{
               width: 135,
-              height: 45,
               fontSize: 18,
               marginTop: 25,
+              height: 40,
               backgroundColor: '#028BD7',
             }} onClick={this.submit}>Submit</Button>
           </div>
-
-        </Modal>
-
-        <Modal
-          visible={this.state.visible2}
-          onOk={this.handleOk2}
-          onCancel={this.handleCancel2}
-          closable={false}
-          footer={null}
-          maskClosable={false}
-          style={{ top: '28%' }}
-        >
-          <div style={{
-            fontSize: 22,
-            textAlign: 'center',
-            marginBottom: 15,
-            color: '#000',
-            fontWeight: 600,
-            lineHeight: 1.2,
-          }}>
-            We have sent a verification message to your phone
-          </div>
-          <div style={{ padding: '0 8%', textAlign: 'center' }}>
-            <Input style={{ margin: '10px 0', height: 40, border: 'none', backgroundColor: '#f5f5f5' }}
-                   placeholder='Please enter the verification code'/>
-            <Button type='primary' style={{
-              width: 135,
-              height: 45,
-              fontSize: 18,
-              marginTop: 15,
-              backgroundColor: '#028BD7',
-            }} onClick={this.handleCancel2}>Confirm</Button>
-          </div>
-
         </Modal>
       </div>
     );
