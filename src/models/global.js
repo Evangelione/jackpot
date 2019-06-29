@@ -179,7 +179,9 @@ export default {
           });
         }
       } else {
-        message.error(data.msg);
+        if(data.msg === 'Activities have lapsed') {
+          message.error(data.msg);
+        }
       }
     },
     * fetchPageDetail({ payload: { token, activityId, callback } }, { call, put }) {

@@ -8,7 +8,7 @@ export default {
       antd: true,
       dva: true,
       dynamicImport: { webpackChunkName: true },
-      title: 'jackpot',
+      title: 'vivo_lottery',
       dll: true,
       
       routes: {

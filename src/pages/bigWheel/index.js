@@ -37,7 +37,7 @@ class Index extends Component {
     }).then(() => {
       const arr = this.props.global.prizeList;
       for (let x = arr.length; x < 6; x++) {
-        arr.push({ name: '谢谢参与' });
+        arr.push({ name: 'Thank you for enjoy!' });
       }
       const arr2 = arr.sort(function() {
         return 0.5 - Math.random();
@@ -104,6 +104,16 @@ class Index extends Component {
     });
   }
 
+  findThank = () => {
+    let len;
+    do {
+      len = Math.floor((Math.random() * this.state.prizeList.length));
+    }
+    while (this.state.prizeList[len].name !== 'Thank you for enjoy!'){
+      return len;
+    }
+  };
+
   startWheel = () => {
     if (this.props.loading || this.state.animate) return false;
     this.setState({
@@ -134,7 +144,7 @@ class Index extends Component {
           this.setState({
             animate: 0,
             reset: false,
-            rotate: Math.random() * 5 * 360,
+            rotate: 4 * 360 + (60 * this.findThank()),
           });
         } else {
           message.error(this.props.global.lotteryData);
@@ -142,6 +152,30 @@ class Index extends Component {
             animate: 0,
           });
         }
+        const { activityId } = this.props.location.query;
+        this.props.dispatch({
+          type: 'global/fetchPageDetail',
+          payload: {
+            token: localStorage.getItem('token'),
+            activityId,
+          },
+        });
+          if (this.props.global.lotteryData.prize && this.props.global.lotteryData.prize.id) {
+            const { pageDetail } = this.props.global;
+            if (!this.props.global.userAddress) {
+              this.setState({
+                level1: undefined,
+                level2: undefined,
+                level3: undefined,
+                name: '',
+                address: '',
+                pinCode: '',
+              });
+              pageDetail.records && pageDetail.records.length !== 0 && setTimeout(() => {
+                this.showModal('single');
+              }, 3000);
+            }
+          }
       });
     });
   };
@@ -201,9 +235,12 @@ class Index extends Component {
       return false;
     }
     let cacheId = '';
+
     if (this.state.single) {
+      // 用之前的id
       cacheId = this.props.global.pageDetail.records[0].id;
     } else {
+      // 用新抽的id
       cacheId = this.props.global.lotteryData.hasPrize.id;
     }
     this.props.dispatch({
@@ -243,8 +280,8 @@ class Index extends Component {
                     position: 'absolute',
                     transform: `rotate(${index * 60}deg) translate(0px, -${0.25 * clientWidth}px)`,
                   }}>
-        <img src={item.image} style={{ width: `${0.2 * clientWidth}px` }} alt=""/>
-        <div style={{ textAlign: 'center' }}>{item.name}</div>
+        {/*<img src={item.image} style={{ width: `${0.2 * clientWidth}px` }} alt=""/>*/}
+        <div style={{ textAlign: 'center', width: '70%', margin: '0 auto' }}>{item.name}</div>
       </div>;
     });
   };

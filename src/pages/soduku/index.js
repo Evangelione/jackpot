@@ -7,6 +7,10 @@ const Option = Select.Option;
 const order = [0, 1, 2, 4, 7, 6, 5, 3];
 const HEIGHT = window.screen.width;
 
+// 0 1 2
+// 3   4
+// 5 6 7
+
 @connect(({ global }) => ({
   global,
 }))
@@ -22,10 +26,26 @@ class Index extends Component {
     address: '',
     pinCode: '',
     prizeList: [],
+    prizeList22: [],
   };
 
   timer = null;
   bReady = false;
+
+  findThank = () => {
+    console.log(this.state.prizeList22);
+    let len;
+    do {
+      len = Math.floor((Math.random() * this.state.prizeList22.length));
+      console.log(len);
+    }
+    while (this.state.prizeList22[len].name !== 'Thank you for enjoy!');
+    {
+      console.log(this.state.prizeList22[len].name);
+      return len;
+    }
+  };
+
 
   componentDidMount() {
     const { activityId } = this.props.location.query;
@@ -37,10 +57,13 @@ class Index extends Component {
     }).then(() => {
       const arr = this.props.global.prizeList;
       for (let x = arr.length; x < 8; x++) {
-        arr.push({ name: '谢谢参与', image: require('@/assets/images/vergil.jpg') });
+        arr.push({ name: 'Thank you for enjoy!', image: require('@/assets/images/tky.png') });
       }
       const arr2 = arr.sort(function() {
         return 0.5 - Math.random();
+      });
+      this.setState({
+        prizeList22: arr2,
       });
       arr2.splice(4, 0, {
         name: 'go',
@@ -238,21 +261,69 @@ class Index extends Component {
         token: localStorage.getItem('token'),
       },
     }).then(() => {
+      // const order = [0, 1, 2, 4, 7, 6, 5, 3];
       if (this.props.global.lotteryData.prize && this.props.global.lotteryData.prize.id) {
         // 中奖判断
+        console.log(this.state.prizeList); // 9个元素
         let prizeIndex = this.state.prizeList.findIndex((item) => {
           return item.id === this.props.global.lotteryData.prize.id;
         });
-        this.lottery(prizeIndex + 1);
-      } else if (this.props.global.lotteryData.prize === null) {
-        let prizeIndex = parseInt(Math.random() * this.state.prizeList.length);
-        console.log(prizeIndex)
-        while(this.state.prizeList[prizeIndex].id) {
-          prizeIndex = parseInt(Math.random() * this.state.prizeList.length);
+        if (prizeIndex > 4) {
+          prizeIndex--;
         }
-        this.lottery(prizeIndex + 1);
+        let resultNum = order.findIndex((item) => {
+          return item === prizeIndex;
+        });
+        // console.log('prizeINdex ' + prizeIndex);
+
+        // let resultNum = order[prizeIndex];
+        this.lottery(resultNum + 1);
+        console.log('中奖了   是第' + (resultNum - 0 + 1) + '个');
+        this.props.dispatch({
+          type: 'global/fetchPageDetail',
+          payload: {
+            token: localStorage.getItem('token'),
+            activityId,
+          },
+        });
+        this.props.dispatch({
+          type: 'global/fetchAddress',
+          payload: {
+            id: activityId,
+            imei: localStorage.getItem('imei'),
+            phone: localStorage.getItem('phone'),
+          },
+        });
+      } else if (this.props.global.lotteryData.prize === null) {
+        let prizeIndex = this.findThank();
+        console.log(prizeIndex)
+        if (prizeIndex > 4) {
+          prizeIndex--;
+        }
+        console.log('prizeINdex ' + prizeIndex);
+        let resultNum = order.findIndex((item) => {
+          return item === prizeIndex;
+        });
+        this.lottery(resultNum + 1);
+        console.log('没中奖   是第' + (resultNum - 0 + 1) + '个');
       } else {
         message.error(this.props.global.lotteryData);
+      }
+      if (this.props.global.lotteryData.prize && this.props.global.lotteryData.prize.id) {
+        const { pageDetail } = this.props.global;
+        if (!this.props.global.userAddress) {
+          this.setState({
+            level1: undefined,
+            level2: undefined,
+            level3: undefined,
+            name: '',
+            address: '',
+            pinCode: '',
+          });
+          pageDetail.records && pageDetail.records.length !== 0 && setTimeout(() => {
+            this.showModal('single');
+          }, 5000);
+        }
       }
     });
   };
