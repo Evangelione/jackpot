@@ -5,7 +5,7 @@ import { connect } from 'dva';
 import moment from 'moment';
 
 const Option = Select.Option;
-const HEIGHT = window.screen.width;
+const He = window.screen.width * .88
 
 @connect(({ global, goldenEggs, loading }) => ({
   global,
@@ -219,7 +219,7 @@ class Index extends Component {
       return false;
     }
     if (this.state.pinCode.length < 6) {
-      message.error('pinCode必须为6位');
+      message.error('PIN Code needs to be 6 digits number');
       return false;
     }
     let cacheId = '';
@@ -312,6 +312,14 @@ class Index extends Component {
     if (this.props.loading || (this.props.global.luckyTimes - 0 === 0) || egg.top !== -100 || !this.state.hammerShow) return false;
     const { activityId } = this.props.location.query;
     this.props.dispatch({
+      type: 'global/fetchAddress',
+      payload: {
+        id: activityId,
+        imei: localStorage.getItem('imei'),
+        phone: localStorage.getItem('phone'),
+      },
+    });
+    this.props.dispatch({
       type: 'global/lottery',
       payload: {
         activityId,
@@ -375,17 +383,56 @@ class Index extends Component {
       setTimeout(() => {
         if (this.props.global.luckyTimes - 0 === 0) {
           if (this.props.global.lotteryData.hasPrize && this.props.global.lotteryData.hasPrize.id) {
+            this.setState({
+              level1: undefined,
+              level2: undefined,
+              level3: undefined,
+              name: '',
+              address: '',
+              pinCode: '',
+            });
             this.showModal();
           }
         }
-        const { activityId } = this.props.location.query;
-        this.props.dispatch({
-          type: 'goldenEggs/fetchPageDetail',
-          payload: {
-            token: localStorage.getItem('token'),
-            activityId,
-          },
-        });
+
+        // if (this.props.global.luckyTimes - 0 === 0) {
+        //   if (this.props.global.lotteryData.prize && this.props.global.lotteryData.prize.id) {
+        //     const { pageDetail } = this.props.global;
+        //     if (!this.props.global.userAddress) {
+        //       this.setState({
+        //         level1: undefined,
+        //         level2: undefined,
+        //         level3: undefined,
+        //         name: '',
+        //         address: '',
+        //         pinCode: '',
+        //       });
+        //       pageDetail.records && pageDetail.records.length !== 0 && setTimeout(() => {
+        //         this.showModal('single');
+        //       }, 4000);
+        //     }
+        //   } else {
+        //     const { pageDetail } = this.props.global;
+        //     if (this.props.global.lotteryData.hasPrize && this.props.global.lotteryData.hasPrize.id) {
+        //       if (!this.props.global.userAddress) {
+        //         this.setState({
+        //           level1: undefined,
+        //           level2: undefined,
+        //           level3: undefined,
+        //           name: '',
+        //           address: '',
+        //           pinCode: '',
+        //         });
+        //         pageDetail.records && pageDetail.records.length !== 0 && setTimeout(() => {
+        //           this.showModal('single');
+        //         });
+        //       }
+        //     }
+        //   }
+        // }
+
+
+
         // this.props.global.lotteryData
       }, 2100);
     });
@@ -409,38 +456,38 @@ class Index extends Component {
               left: value.dLeft,
             }}>
               <img src={value.image} onClick={this.beatEgg.bind(null, index)}
-                   style={{ transform: `rotate(${interpolatingStyle.eggRotate}deg)`, transformOrigin: 'center bottom' }}
-                   alt=""/>
+                style={{ transform: `rotate(${interpolatingStyle.eggRotate}deg)`, transformOrigin: 'center bottom' }}
+                alt="" />
               <img src={require('@/assets/images/hammer.png')} alt=""
-                   style={{
-                     position: 'absolute',
-                     top: interpolatingStyle.top,
-                     left: interpolatingStyle.left,
-                     transform: `rotate(${interpolatingStyle.rotate}deg)`,
-                     display: (interpolatingStyle.top === -30 || interpolatingStyle.top === -100) ? 'none' : 'block',
-                     zIndex: 999,
-                     width: 65,
-                     height: 82,
-                   }}/>
+                style={{
+                  position: 'absolute',
+                  top: interpolatingStyle.top,
+                  left: interpolatingStyle.left,
+                  transform: `rotate(${interpolatingStyle.rotate}deg)`,
+                  display: (interpolatingStyle.top === -30 || interpolatingStyle.top === -100) ? 'none' : 'block',
+                  zIndex: 999,
+                  width: 65,
+                  height: 82,
+                }} />
               <img src={require('@/assets/images/sahua.png')}
-                   style={{
-                     position: 'absolute',
-                     top: '-25px',
-                     left: '-4px',
-                     width: '130%',
-                     height: '143%',
-                     display: interpolatingStyle.top !== -30 ? 'none' : 'block',
-                   }} alt=""/>
+                style={{
+                  position: 'absolute',
+                  top: '-25px',
+                  left: '-4px',
+                  width: '130%',
+                  height: '143%',
+                  display: interpolatingStyle.top !== -30 ? 'none' : 'block',
+                }} alt="" />
               <img src={value.thanks}
-                   style={{
-                     position: 'absolute',
-                     top: '-12px',
-                     left: '17px',
-                     width: 50,
-                     height: 50,
-                     display: interpolatingStyle.top !== -30 ? 'none' : 'block',
-                   }} alt=""/>
-              <div style={{ clear: 'both' }}/>
+                style={{
+                  position: 'absolute',
+                  top: '-12px',
+                  left: '17px',
+                  width: 50,
+                  height: 50,
+                  display: interpolatingStyle.top !== -30 ? 'none' : 'block',
+                }} alt="" />
+              <div style={{ clear: 'both' }} />
             </div>
           );
         }}
@@ -456,8 +503,8 @@ class Index extends Component {
           <div style={{
             background: `url(${value.image}) no-repeat center center`,
             backgroundSize: 'cover',
-            height: HEIGHT / 3,
-          }}/>
+            height: (He - 102) / 3,
+          }} />
         </div>
         <div>
           <div>{value.title}</div>
@@ -484,7 +531,7 @@ class Index extends Component {
       return <div className='bg-gray' key={index}>
         <div className='QR-code-box'>
           <div className='QR-code'>
-            <img src={value.prize.image} alt="" style={{ minWidth: 80, minHeight: 80, width: '100%' }}/>
+            <img src={value.prize.image} alt="" style={{ minWidth: 80, minHeight: 80, width: '100%' }} />
           </div>
           <div className='QR-detail'>
             <div>Prize: <span className='red'>{value.prize.name}</span></div>
@@ -554,15 +601,15 @@ class Index extends Component {
       <div className='golden-bg' style={{ background: `url(${this.state.bg})` }}>
         <div className='egg-container'>
           <div className='title'>
-            <img src={this.state.kv} alt=""/>
+            <img src={this.state.kv} alt="" />
           </div>
           <div className='egg-stage'>
-            <img src={require('@/assets/images/stage.png')} alt=""/>
+            <img src={require('@/assets/images/stage.png')} alt="" />
             <div className='eggs'>
               {this.mapEggs()}
             </div>
             <div className='hammer' style={{ display: this.state.hammerShow ? 'block' : 'none' }}>
-              <img src={require('@/assets/images/hammer.png')} alt=""/>
+              <img src={require('@/assets/images/hammer.png')} alt="" />
             </div>
           </div>
           <div className='detail'>
@@ -580,7 +627,7 @@ class Index extends Component {
             </div>
             {pageDetail.records && pageDetail.records.length !== 0 ?
               <Button onClick={this.showModal.bind(null, 'single')}
-                      style={{ borderColor: '#028BD7', color: '#028BD7', marginBottom: 15 }}>contact
+                style={{ borderColor: '#028BD7', color: '#028BD7', marginBottom: 15 }}>contact
                 details</Button> : null}
             {this.mapRecordsList()}
           </div> : null}
@@ -628,7 +675,7 @@ class Index extends Component {
           </div>
           <div style={{ padding: '0 8%', textAlign: 'center' }} id='selectCustom'>
             <Input style={{ margin: '10px 0', border: 'none', backgroundColor: '#f5f5f5' }}
-                   placeholder='Please enter your name' value={name} onChange={this.changeField.bind(null, 'name')}/>
+              placeholder='Please enter your name' value={name} onChange={this.changeField.bind(null, 'name')} />
             <Select value={this.state.level1} style={{
               width: '100%',
               border: 'none',
@@ -659,11 +706,11 @@ class Index extends Component {
               {this.mapAddressItem(this.props.global.level3)}
             </Select>
             <Input style={{ margin: '10px 0', border: 'none', backgroundColor: '#f5f5f5' }}
-                   placeholder='Enter the detailed address' value={address}
-                   onChange={this.changeField.bind(null, 'address')}/>
+              placeholder='Enter the detailed address' value={address}
+              onChange={this.changeField.bind(null, 'address')} />
             <Input style={{ border: 'none', backgroundColor: '#f5f5f5' }}
-                   placeholder='Enter the PIN Code' value={pinCode}
-                   onChange={this.changeField.bind(null, 'pinCode')} onBlur={this.blurPinCode}/>
+              placeholder='Enter the PIN Code' value={pinCode}
+              onChange={this.changeField.bind(null, 'pinCode')} onBlur={this.blurPinCode} />
             <Button type='primary' style={{
               width: 135,
               fontSize: 18,
@@ -694,7 +741,7 @@ class Index extends Component {
           </div>
           <div style={{ padding: '0 8%', textAlign: 'center' }}>
             <Input style={{ margin: '10px 0', height: 40, border: 'none', backgroundColor: '#f5f5f5' }}
-                   placeholder='Please enter the verification code'/>
+              placeholder='Please enter the verification code' />
             <Button type='primary' style={{
               width: 135,
               height: 45,

@@ -1,14 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="817717f1-4b1b-4afd-bf7a-0089f847e978" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.umirc.js" beforeDir="false" afterPath="$PROJECT_DIR$/.umirc.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/global.less" beforeDir="false" afterPath="$PROJECT_DIR$/src/global.less" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/models/global.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/models/global.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/bigWheel/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/bigWheel/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/soduku/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/soduku/index.js" afterDir="false" />
-    </list>
+    <list default="true" id="817717f1-4b1b-4afd-bf7a-0089f847e978" name="Default Changelist" comment="" />
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
     <ignored path="$PROJECT_DIR$/tmp/" />
@@ -35,8 +28,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/pages/soduku/index.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="279">
-              <caret line="59" column="88" selection-start-line="59" selection-start-column="88" selection-end-line="59" selection-end-column="88" />
+            <state relative-caret-position="217">
+              <caret line="45" column="5" lean-forward="true" selection-start-line="45" selection-start-column="5" selection-end-line="45" selection-end-column="5" />
               <folding>
                 <element signature="e#0#41#0" expanded="true" />
               </folding>
@@ -189,24 +182,6 @@
               <item name="jackpot" type="b2602c69:ProjectViewProjectNode" />
               <item name="jackpot" type="462c0819:PsiDirectoryNode" />
             </path>
-            <path>
-              <item name="jackpot" type="b2602c69:ProjectViewProjectNode" />
-              <item name="jackpot" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="jackpot" type="b2602c69:ProjectViewProjectNode" />
-              <item name="jackpot" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="assets" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="jackpot" type="b2602c69:ProjectViewProjectNode" />
-              <item name="jackpot" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="assets" type="462c0819:PsiDirectoryNode" />
-              <item name="images" type="462c0819:PsiDirectoryNode" />
-            </path>
           </expand>
           <select />
         </subPane>
@@ -315,16 +290,15 @@
       <workItem from="1560428846985" duration="9452000" />
       <workItem from="1561295919611" duration="9486000" />
       <workItem from="1561391138824" duration="117000" />
-      <workItem from="1561811178572" duration="9132000" />
+      <workItem from="1561811178572" duration="9385000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="197133000" />
+    <option name="totallyTimeSpent" value="197386000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="866" y="135" width="1494" height="1053" extended-state="0" />
-    <editor active="true" />
     <layout>
       <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.20398352" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
@@ -339,7 +313,7 @@
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="8" weight="0.32928312" />
-      <window_info anchor="bottom" id="Terminal" order="9" weight="0.27122942" />
+      <window_info anchor="bottom" id="Terminal" order="9" visible="true" weight="0.5016322" />
       <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
       <window_info anchor="bottom" id="TypeScript" order="11" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
@@ -602,8 +576,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/pages/soduku/index.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="279">
-          <caret line="59" column="88" selection-start-line="59" selection-start-column="88" selection-end-line="59" selection-end-column="88" />
+        <state relative-caret-position="217">
+          <caret line="45" column="5" lean-forward="true" selection-start-line="45" selection-start-column="5" selection-end-line="45" selection-end-column="5" />
           <folding>
             <element signature="e#0#41#0" expanded="true" />
           </folding>

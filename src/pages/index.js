@@ -164,6 +164,11 @@ class Index extends Component {
     }
   };
 
+  codeblur = () => {
+    window.scrollTo(0, 1000);
+    document.querySelector('body').scrollTo(0,0)
+  }
+
   getPattern = (value) => {
     let pattern = '';
     if (value === '+91') {
@@ -201,14 +206,14 @@ class Index extends Component {
     return (
       <div className={styles['login-bg']}>
         <Form className={styles['input-box']}>
-          <img src={require('@/assets/images/vivo.png')} style={{ width: '50%', marginBottom: 30 }} alt=""/>
+          <img src={require('@/assets/images/vivo.png')} style={{ width: '50%', marginBottom: 30 }} alt="" />
           <Form.Item>
             {getFieldDecorator('imei', {
               rules: [{ required: true, pattern: REGS.imei, message: 'Invalid format' }],
               validateTrigger: 'onBlur',
             })(
               <Input addonBefore={<div style={{ width: 50, textAlign: 'left' }}>IMEI</div>}
-                     placeholder='please enter your IMEI code' onBlur={this.IMeiBlur}/>,
+                placeholder='please enter your IMEI code' onBlur={this.IMeiBlur} />,
             )}
           </Form.Item>
           <Form.Item>
@@ -216,7 +221,7 @@ class Index extends Component {
               rules: [{ required: true, pattern: pattern, message: 'Invalid format' }],
               validateTrigger: 'onBlur',
             })(
-              <Input addonBefore={selectBefore} placeholder='please enter your phone number' onBlur={this.phoneBlur}/>,
+              <Input addonBefore={selectBefore} placeholder='please enter your phone number' onBlur={this.phoneBlur} />,
             )}
           </Form.Item>
           <Form.Item style={{ position: 'relative' }}>
@@ -224,7 +229,7 @@ class Index extends Component {
               rules: [{ required: true, message: 'Please input your code' }],
             })(
               <Input addonBefore={<div style={{ width: 50, textAlign: 'left' }}>Code</div>}
-                     placeholder='please verification code'/>,
+                placeholder='please verification code' onBlur={this.codeblur} />,
             )}
             <div className='get-code' onClick={this.getCode}>{this.state.codeHolder}</div>
           </Form.Item>

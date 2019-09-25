@@ -5,7 +5,7 @@ import moment from 'moment';
 
 const Option = Select.Option;
 const order = [0, 1, 2, 4, 7, 6, 5, 3];
-const HEIGHT = window.screen.width;
+const He = window.screen.width * .88
 
 // 0 1 2
 // 3   4
@@ -59,7 +59,7 @@ class Index extends Component {
       for (let x = arr.length; x < 8; x++) {
         arr.push({ name: 'Thank you for enjoy!', image: require('@/assets/images/tky.png') });
       }
-      const arr2 = arr.sort(function() {
+      const arr2 = arr.sort(function () {
         return 0.5 - Math.random();
       });
       this.setState({
@@ -182,7 +182,7 @@ class Index extends Component {
       return false;
     }
     if (this.state.pinCode.length < 6) {
-      message.error('pinCode必须为6位');
+      message.error('PIN Code needs to be 6 digits number');
       return false;
     }
     let cacheId = '';
@@ -240,7 +240,7 @@ class Index extends Component {
       }
       if (i >= rNum + num) {
         let timer2 = null;
-        timer2 = setTimeout(function() {
+        timer2 = setTimeout(function () {
           clearTimeout(timer2);
         }, 1000);
         this.bReady = false;
@@ -309,22 +309,48 @@ class Index extends Component {
       } else {
         message.error(this.props.global.lotteryData);
       }
-      if (this.props.global.lotteryData.prize && this.props.global.lotteryData.prize.id) {
-        const { pageDetail } = this.props.global;
-        if (!this.props.global.userAddress) {
-          this.setState({
-            level1: undefined,
-            level2: undefined,
-            level3: undefined,
-            name: '',
-            address: '',
-            pinCode: '',
-          });
-          pageDetail.records && pageDetail.records.length !== 0 && setTimeout(() => {
-            this.showModal('single');
-          }, 5000);
+      this.props.dispatch({
+        type: 'global/fetchPageDetail',
+        payload: {
+          token: localStorage.getItem('token'),
+          activityId,
+        },
+      }).then(() => {
+        if (this.props.global.luckyTimes - 0 === 0) {
+          if (this.props.global.lotteryData.prize && this.props.global.lotteryData.prize.id) {
+            const { pageDetail } = this.props.global;
+            if (!this.props.global.userAddress) {
+              this.setState({
+                level1: undefined,
+                level2: undefined,
+                level3: undefined,
+                name: '',
+                address: '',
+                pinCode: '',
+              });
+              pageDetail.records && pageDetail.records.length !== 0 && setTimeout(() => {
+                this.showModal('single');
+              }, 4000);
+            }
+          } else {
+            const { pageDetail } = this.props.global;
+            console.log(pageDetail)
+            if (!this.props.global.userAddress) {
+              this.setState({
+                level1: undefined,
+                level2: undefined,
+                level3: undefined,
+                name: '',
+                address: '',
+                pinCode: '',
+              });
+              pageDetail.records && pageDetail.records.length !== 0 && setTimeout(() => {
+                this.showModal('single');
+              });
+            }
+          }
         }
-      }
+      })
     });
   };
 
@@ -337,7 +363,7 @@ class Index extends Component {
       return <div className='bg-gray' key={index}>
         <div className='QR-code-box'>
           <div className='QR-code'>
-            <img src={value.prize.image} alt="" style={{ minWidth: 80, minHeight: 80, width: '100%' }}/>
+            <img src={value.prize.image} alt="" style={{ minWidth: 80, minHeight: 80, width: '100%' }} />
           </div>
           <div className='QR-detail'>
             <div>Prize: <span className='red'>{value.prize.name}</span></div>
@@ -359,8 +385,8 @@ class Index extends Component {
           <div style={{
             background: `url(${value.image}) no-repeat center center`,
             backgroundSize: 'cover',
-            height: HEIGHT / 3,
-          }}/>
+            height: (He - 102) / 3,
+          }} />
         </div>
         <div>
           <div>{value.title}</div>
@@ -420,10 +446,10 @@ class Index extends Component {
       <div style={{ backgroundColor: '#69C3FF' }}>
         <div className='sudoku-container'>
           <div className='sudoku-title'>
-            <img src={require('@/assets/images/kv.png')} alt=""/>
+            <img src={require('@/assets/images/kv.png')} alt="" />
           </div>
           <div className='sudoku'>
-            <img src={require('@/assets/images/soduku_blue.png')} alt=""/>
+            <img src={require('@/assets/images/soduku_blue.png')} alt="" />
             {/*<div className='sudoku-start'>*/}
             {/*<img src={require('@/assets/images/go.png')} onClick={this.showModal} alt=""/>*/}
             {/*</div>*/}
@@ -432,16 +458,16 @@ class Index extends Component {
                 if (index === 4) {
                   return <span style={{ backgroundColor: 'transparent', display: 'block' }} key={index}>
                     <img src={value.image} style={{ width: '100%', height: '100%' }}
-                         onClick={this.aClick} alt=""/>
+                      onClick={this.aClick} alt="" />
                   </span>;
                 }
                 return <div key={index}>
-                  <img src={value.image} alt=""/>
+                  <img src={value.image} alt="" />
                 </div>;
               })}
             </div>
           </div>
-          <img src={require('@/assets/images/zz.png')} className='sudoku-mask' alt=""/>
+          <img src={require('@/assets/images/zz.png')} className='sudoku-mask' alt="" />
           <div className='detail'>
             <div className='bar'>
               You have <span>{luckyTimes || 0}</span> raffle chances
@@ -458,7 +484,7 @@ class Index extends Component {
             </div>
             {pageDetail.records && pageDetail.records.length !== 0 ?
               <Button onClick={this.showModal.bind(null, 'single')}
-                      style={{ borderColor: '#028BD7', color: '#028BD7', marginBottom: 15 }}>contact
+                style={{ borderColor: '#028BD7', color: '#028BD7', marginBottom: 15 }}>contact
                 details</Button> : null}
             {this.mapRecordsList()}
           </div> : null}
@@ -507,7 +533,7 @@ class Index extends Component {
           </div>
           <div style={{ padding: '0 8%', textAlign: 'center' }} id='selectCustom'>
             <Input style={{ margin: '10px 0', border: 'none', backgroundColor: '#f5f5f5' }}
-                   placeholder='Please enter your name' value={name} onChange={this.changeField.bind(null, 'name')}/>
+              placeholder='Please enter your name' value={name} onChange={this.changeField.bind(null, 'name')} />
             <Select value={this.state.level1} style={{
               width: '100%',
               border: 'none',
@@ -538,11 +564,11 @@ class Index extends Component {
               {this.mapAddressItem(this.props.global.level3)}
             </Select>
             <Input style={{ margin: '10px 0', border: 'none', backgroundColor: '#f5f5f5' }}
-                   placeholder='Enter the detailed address' value={address}
-                   onChange={this.changeField.bind(null, 'address')}/>
+              placeholder='Enter the detailed address' value={address}
+              onChange={this.changeField.bind(null, 'address')} />
             <Input style={{ border: 'none', backgroundColor: '#f5f5f5' }}
-                   placeholder='Enter the PIN Code' value={pinCode}
-                   onChange={this.changeField.bind(null, 'pinCode')} onBlur={this.blurPinCode}/>
+              placeholder='Enter the PIN Code' value={pinCode}
+              onChange={this.changeField.bind(null, 'pinCode')} onBlur={this.blurPinCode} />
             <Button type='primary' style={{
               width: 135,
               fontSize: 18,

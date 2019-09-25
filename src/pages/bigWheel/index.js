@@ -4,8 +4,7 @@ import { connect } from 'dva';
 import moment from 'moment';
 
 const Option = Select.Option;
-const HEIGHT = window.screen.width;
-
+const He = window.screen.width * .88
 @connect(({ global }) => ({
   global,
 }))
@@ -24,6 +23,8 @@ class Index extends Component {
     name: '',
     address: '',
     pinCode: '',
+    ad222: '',
+    visible222: false
   };
 
 
@@ -39,7 +40,7 @@ class Index extends Component {
       for (let x = arr.length; x < 6; x++) {
         arr.push({ name: 'Thank you for enjoy!' });
       }
-      const arr2 = arr.sort(function() {
+      const arr2 = arr.sort(function () {
         return 0.5 - Math.random();
       });
       this.setState({
@@ -109,13 +110,13 @@ class Index extends Component {
     do {
       len = Math.floor((Math.random() * this.state.prizeList.length));
     }
-    while (this.state.prizeList[len].name !== 'Thank you for enjoy!'){
+    while (this.state.prizeList[len].name !== 'Thank you for enjoy!') {
       return len;
     }
   };
 
   startWheel = () => {
-    if (this.props.loading || this.state.animate) return false;
+    if (this.state.animate) return false;
     this.setState({
       animate: 1,
       reset: true,
@@ -136,20 +137,13 @@ class Index extends Component {
           });
           console.log(prizeIndex);
           this.setState({
-            animate: 0,
             reset: false,
             rotate: 4 * 360 + (60 * prizeIndex),
           });
         } else if (this.props.global.lotteryData.prize === null) {
           this.setState({
-            animate: 0,
             reset: false,
             rotate: 4 * 360 + (60 * this.findThank()),
-          });
-        } else {
-          message.error(this.props.global.lotteryData);
-          this.setState({
-            animate: 0,
           });
         }
         const { activityId } = this.props.location.query;
@@ -159,23 +153,38 @@ class Index extends Component {
             token: localStorage.getItem('token'),
             activityId,
           },
-        });
+        }).then(() => {
           if (this.props.global.lotteryData.prize && this.props.global.lotteryData.prize.id) {
-            const { pageDetail } = this.props.global;
-            if (!this.props.global.userAddress) {
+            setTimeout(() => {
               this.setState({
-                level1: undefined,
-                level2: undefined,
-                level3: undefined,
-                name: '',
-                address: '',
-                pinCode: '',
-              });
-              pageDetail.records && pageDetail.records.length !== 0 && setTimeout(() => {
-                this.showModal('single');
-              }, 3000);
+                ad222: this.props.global.lotteryData.prize.image,
+                visible222: true,
+              })
+            }, 2000)
+          } else {
+            if (this.props.global.luckyTimes - 0 === 0) {
+              const { pageDetail } = this.props.global;
+              if (!this.props.global.userAddress) {
+                this.setState({
+                  level1: undefined,
+                  level2: undefined,
+                  level3: undefined,
+                  name: '',
+                  address: '',
+                  pinCode: '',
+                });
+                pageDetail.records && pageDetail.records.length !== 0 && setTimeout(() => {
+                  this.showModal('single');
+                });
+              }
             }
+            setTimeout(() => {
+              this.setState({
+                animate: 0,
+              })
+            }, 2000)
           }
+        })
       });
     });
   };
@@ -231,7 +240,7 @@ class Index extends Component {
       return false;
     }
     if (this.state.pinCode.length < 6) {
-      message.error('pinCode必须为6位');
+      message.error('PIN Code needs to be 6 digits number');
       return false;
     }
     let cacheId = '';
@@ -276,10 +285,10 @@ class Index extends Component {
     const clientWidth = document.body.clientWidth;
     return this.state.prizeList.map((item, index) => {
       return <div key={index}
-                  style={{
-                    position: 'absolute',
-                    transform: `rotate(${index * 60}deg) translate(0px, -${0.25 * clientWidth}px)`,
-                  }}>
+        style={{
+          position: 'absolute',
+          transform: `rotate(${index * 60}deg) translate(0px, -${0.25 * clientWidth}px)`,
+        }}>
         {/*<img src={item.image} style={{ width: `${0.2 * clientWidth}px` }} alt=""/>*/}
         <div style={{ textAlign: 'center', width: '70%', margin: '0 auto' }}>{item.name}</div>
       </div>;
@@ -293,8 +302,8 @@ class Index extends Component {
           <div style={{
             background: `url(${value.image}) no-repeat center center`,
             backgroundSize: 'cover',
-            height: HEIGHT / 3,
-          }}/>
+            height: (He - 102) / 3,
+          }} />
         </div>
         <div>
           <div>{value.title}</div>
@@ -304,14 +313,36 @@ class Index extends Component {
       </div>;
     });
   };
-
+  handleCancel222 = (e) => {
+    console.log(e);
+    this.setState({
+      visible222: false,
+      animate: 0
+    });
+    if (this.props.global.luckyTimes - 0 === 0) {
+      const { pageDetail } = this.props.global;
+      if (!this.props.global.userAddress) {
+        this.setState({
+          level1: undefined,
+          level2: undefined,
+          level3: undefined,
+          name: '',
+          address: '',
+          pinCode: '',
+        });
+        pageDetail.records && pageDetail.records.length !== 0 && setTimeout(() => {
+          this.showModal('single');
+        });
+      }
+    }
+  };
 
   mapRecordsList = () => {
     return this.props.global.pageDetail.records && this.props.global.pageDetail.records.map((value, index) => {
       return <div className='bg-gray' key={index}>
         <div className='QR-code-box'>
           <div className='QR-code'>
-            <img src={value.prize.image} alt="" style={{ minWidth: 80, minHeight: 80, width: '100%' }}/>
+            <img src={value.prize.image} alt="" style={{ minWidth: 80, minHeight: 80, width: '100%' }} />
           </div>
           <div className='QR-detail'>
             <div>Prize: <span className='red'>{value.prize.name}</span></div>
@@ -376,18 +407,18 @@ class Index extends Component {
       <div>
         <div className='wheel-container'>
           <div className='title'>
-            <img src={require('@/assets/images/title.png')} alt=""/>
+            <img src={require('@/assets/images/title.png')} alt="" />
           </div>
           <div className='bigWheel'>
-            <img src={require('@/assets/images/big wheel 6.png')} alt=""/>
+            <img src={require('@/assets/images/big wheel 6.png')} alt="" />
             <div className='wheel-start'>
               <img src={require('@/assets/images/icon_start.png')}
-                   style={{
-                     transition: this.state.reset ? '' : 'all 3s',
-                     transform: `rotate(${rotate}deg)`,
-                     transformOrigin: '50% 60%',
-                   }}
-                   onClick={this.startWheel} alt=""/>
+                style={{
+                  transition: this.state.reset ? '' : 'all 3s',
+                  transform: `rotate(${rotate}deg)`,
+                  transformOrigin: '50% 60%',
+                }}
+                onClick={this.startWheel} alt="" />
             </div>
             {this.mapRoundPrizeList()}
           </div>
@@ -407,7 +438,7 @@ class Index extends Component {
             </div>
             {pageDetail.records && pageDetail.records.length !== 0 ?
               <Button onClick={this.showModal.bind(null, 'single')}
-                      style={{ borderColor: '#028BD7', color: '#028BD7', marginBottom: 15 }}>contact
+                style={{ borderColor: '#028BD7', color: '#028BD7', marginBottom: 15 }}>contact
                 details</Button> : null}
             {this.mapRecordsList()}
           </div> : null}
@@ -455,7 +486,7 @@ class Index extends Component {
           </div>
           <div style={{ padding: '0 8%', textAlign: 'center' }} id='selectCustom'>
             <Input style={{ margin: '10px 0', border: 'none', backgroundColor: '#f5f5f5' }}
-                   placeholder='Please enter your name' value={name} onChange={this.changeField.bind(null, 'name')}/>
+              placeholder='Please enter your name' value={name} onChange={this.changeField.bind(null, 'name')} />
             <Select value={this.state.level1} style={{
               width: '100%',
               border: 'none',
@@ -486,11 +517,11 @@ class Index extends Component {
               {this.mapAddressItem(this.props.global.level3)}
             </Select>
             <Input style={{ margin: '10px 0', border: 'none', backgroundColor: '#f5f5f5' }}
-                   placeholder='Enter the detailed address' value={address}
-                   onChange={this.changeField.bind(null, 'address')}/>
+              placeholder='Enter the detailed address' value={address}
+              onChange={this.changeField.bind(null, 'address')} />
             <Input style={{ border: 'none', backgroundColor: '#f5f5f5' }}
-                   placeholder='Enter the PIN Code' value={pinCode}
-                   onChange={this.changeField.bind(null, 'pinCode')} onBlur={this.blurPinCode}/>
+              placeholder='Enter the PIN Code' value={pinCode}
+              onChange={this.changeField.bind(null, 'pinCode')} onBlur={this.blurPinCode} />
             <Button type='primary' style={{
               width: 135,
               fontSize: 18,
@@ -500,6 +531,33 @@ class Index extends Component {
             }} onClick={this.submit}>Submit</Button>
           </div>
         </Modal>
+
+
+
+
+
+
+
+
+
+
+
+        <Modal
+          visible={this.state.visible222}
+          onCancel={this.handleCancel222}
+          bodyStyle={{
+            backgroundImage: `url(${this.state.ad222})`,
+            height: '70vh',
+            backgroundRepeat: 'no-repeat',
+            backgroundSize: '100% 100%',
+            backgroundAttachment: 'fixed',
+          }}
+          footer={null}
+        >
+        </Modal>
+
+
+
       </div>
     );
   }
