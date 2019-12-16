@@ -31,51 +31,20 @@ class Index extends Component {
       message.error('路径没有activityId参数，无法识别活动');
       return false;
     }
-    this.props.dispatch({
-      type: 'global/fetchKV',
-      payload: {
-        id: this.props.location.query.activityId,
-      },
-    }).then(() => {
-      this.setState({
-        ad: localStorage.getItem('ad'),
-      });
-      this.showModal();
-    });
-  }
-
-
-  getCode = () => {
-    this.props.form.validateFields(['imei', 'phone'], (err, values) => {
-      if (!err) {
-        if ((this.state.codeHolder !== 'Get Code') || !values.phone) return false;
+    this.props
+      .dispatch({
+        type: 'global/fetchKV',
+        payload: {
+          id: this.props.location.query.activityId,
+        },
+      })
+      .then(() => {
         this.setState({
-          codeHolder: `${this.sec}s`,
+          ad: localStorage.getItem('ad'),
         });
-        this.props.dispatch({
-          type: 'global/getCode',
-          payload: {
-            type: 'login',
-            phone: this.state.postStr.substr(1) + values.phone,
-          },
-        });
-        this.timer = setInterval(() => {
-          this.sec -= 1;
-          this.setState({
-            codeHolder: `${this.sec}s`,
-          });
-          if (this.sec < 0) {
-            clearInterval(this.timer);
-            this.timer = null;
-            this.sec = 60;
-            this.setState({
-              codeHolder: 'Get Code',
-            });
-          }
-        }, 1000);
-      }
-    });
-  };
+        this.showModal();
+      });
+  }
 
   showModal = () => {
     this.setState({
@@ -96,7 +65,7 @@ class Index extends Component {
     }, 1000);
   };
 
-  handleCancel = (e) => {
+  handleCancel = e => {
     console.log(e);
     this.setState({
       visible: false,
@@ -124,14 +93,14 @@ class Index extends Component {
     });
   };
 
-  changeSelectStr = (value) => {
+  changeSelectStr = value => {
     this.setState({
       postStr: value,
     });
     this.getPattern(value);
   };
 
-  IMeiBlur = (e) => {
+  IMeiBlur = e => {
     if (!this.props.location.query.activityId) {
       message.error('路径没有activityId参数，无法识别活动');
       return false;
@@ -147,7 +116,7 @@ class Index extends Component {
     }
   };
 
-  phoneBlur = (e) => {
+  phoneBlur = e => {
     if (!this.props.location.query.activityId) {
       message.error('路径没有activityId参数，无法识别活动');
       return false;
@@ -164,12 +133,71 @@ class Index extends Component {
     }
   };
 
+  getCode = () => {
+    if (!this.props.location.query.activityId) {
+      message.error('路径没有activityId参数，无法识别活动');
+      return false;
+    }
+    if (this.props.form.getFieldValue('imei').length === 15) {
+      this.props
+        .dispatch({
+          type: 'global/checkimei',
+          payload: {
+            imei: this.props.form.getFieldValue('imei'),
+            activityId: this.props.location.query.activityId,
+          },
+        })
+        .then(() => {
+          this.props
+            .dispatch({
+              type: 'global/checkimeiAndPhone',
+              payload: {
+                imei: this.props.form.getFieldValue('imei'),
+                phone: this.state.postStr.substr(1) + this.props.form.getFieldValue('phone'),
+                activityId: this.props.location.query.activityId,
+              },
+            })
+            .then(() => {
+              this.props.form.validateFields(['imei', 'phone'], (err, values) => {
+                if (!err) {
+                  if (this.state.codeHolder !== 'Get Code' || !values.phone) return false;
+                  this.setState({
+                    codeHolder: `${this.sec}s`,
+                  });
+                  this.props.dispatch({
+                    type: 'global/getCode',
+                    payload: {
+                      type: 'login',
+                      phone: this.state.postStr.substr(1) + values.phone,
+                    },
+                  });
+                  this.timer = setInterval(() => {
+                    this.sec -= 1;
+                    this.setState({
+                      codeHolder: `${this.sec}s`,
+                    });
+                    if (this.sec < 0) {
+                      clearInterval(this.timer);
+                      this.timer = null;
+                      this.sec = 60;
+                      this.setState({
+                        codeHolder: 'Get Code',
+                      });
+                    }
+                  }, 1000);
+                }
+              });
+            });
+        });
+    }
+  };
+
   codeblur = () => {
     window.scrollTo(0, 1000);
-    document.querySelector('body').scrollTo(0,0)
-  }
+    document.querySelector('body').scrollTo(0, 0);
+  };
 
-  getPattern = (value) => {
+  getPattern = value => {
     let pattern = '';
     if (value === '+91') {
       pattern = '^[1-9]{1}[0-9]{9}$';
@@ -206,32 +234,41 @@ class Index extends Component {
     return (
       <div className={styles['login-bg']}>
         <Form className={styles['input-box']}>
-          <img src={require('@/assets/images/vivo.png')} style={{ width: '50%', marginBottom: 30 }} alt="" />
+          <img
+            src={require('@/assets/images/vivo.png')}
+            style={{ width: '50%', marginBottom: 30 }}
+            alt=""
+          />
           <Form.Item>
             {getFieldDecorator('imei', {
               rules: [{ required: true, pattern: REGS.imei, message: 'Invalid format' }],
               validateTrigger: 'onBlur',
             })(
-              <Input addonBefore={<div style={{ width: 50, textAlign: 'left' }}>IMEI</div>}
-                placeholder='please enter your IMEI code' onBlur={this.IMeiBlur} />,
+              <Input
+                addonBefore={<div style={{ width: 50, textAlign: 'left' }}>IMEI</div>}
+                placeholder="please enter your IMEI code"
+              />
             )}
           </Form.Item>
           <Form.Item>
             {getFieldDecorator('phone', {
               rules: [{ required: true, pattern: pattern, message: 'Invalid format' }],
               validateTrigger: 'onBlur',
-            })(
-              <Input addonBefore={selectBefore} placeholder='please enter your phone number' onBlur={this.phoneBlur} />,
-            )}
+            })(<Input addonBefore={selectBefore} placeholder="please enter your phone number" />)}
           </Form.Item>
           <Form.Item style={{ position: 'relative' }}>
             {getFieldDecorator('code', {
               rules: [{ required: true, message: 'Please input your code' }],
             })(
-              <Input addonBefore={<div style={{ width: 50, textAlign: 'left' }}>Code</div>}
-                placeholder='please verification code' onBlur={this.codeblur} />,
+              <Input
+                addonBefore={<div style={{ width: 50, textAlign: 'left' }}>Code</div>}
+                placeholder="please verification code"
+                onBlur={this.codeblur}
+              />
             )}
-            <div className='get-code' onClick={this.getCode}>{this.state.codeHolder}</div>
+            <div className="get-code" onClick={this.getCode}>
+              {this.state.codeHolder}
+            </div>
           </Form.Item>
           <Button onClick={this.login}>LOG IN</Button>
         </Form>
@@ -248,15 +285,17 @@ class Index extends Component {
           }}
           footer={null}
         >
-          <div style={{
-            position: 'absolute',
-            top: 8,
-            right: 10,
-            fontSize: 14,
-            color: '#666',
-          }}>({this.state.countDown}s)&nbsp;&nbsp;<span onClick={this.handleCancel}>Skip Ad</span>
+          <div
+            style={{
+              position: 'absolute',
+              top: 8,
+              right: 10,
+              fontSize: 14,
+              color: '#666',
+            }}
+          >
+            ({this.state.countDown}s)&nbsp;&nbsp;<span onClick={this.handleCancel}>Skip Ad</span>
           </div>
-
         </Modal>
       </div>
     );

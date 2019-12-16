@@ -16,28 +16,26 @@ export default {
     smsId: '',
     verification: '',
     prizeList: [],
-    pageDetail: {}
+    pageDetail: {},
   },
 
   subscriptions: {
-    setup({ dispatch, history }) {
-    },
+    setup({ dispatch, history }) {},
   },
 
   effects: {
-    * getCode({ payload: { phone, type } }, { call, put }) {
+    *getCode({ payload: { phone, type } }, { call, put }) {
       const { data } = yield call(services.getCode, phone, type);
-      parseInt(data.code, 10) === 1 ?
-        yield put({
-          type: 'save',
-          payload: {
-            loginKey: data.data.key,
-          },
-        })
-        :
-        message.error(data.msg);
+      parseInt(data.code, 10) === 1
+        ? yield put({
+            type: 'save',
+            payload: {
+              loginKey: data.data.key,
+            },
+          })
+        : message.error(data.msg);
     },
-    * login({ payload: { phone, key, code, imei, activityId } }, { call, put }) {
+    *login({ payload: { phone, key, code, imei, activityId } }, { call, put }) {
       const { data } = yield call(services.login, phone, key, code, imei, activityId);
       if (parseInt(data.code, 10) === 1) {
         localStorage.setItem('token', data.data.token);
@@ -70,48 +68,51 @@ export default {
         message.error(data.msg);
       }
     },
-    * lottery({ payload: { token, activityId } }, { call, put }) {
+    *lottery({ payload: { token, activityId } }, { call, put }) {
       const { data } = yield call(services.lottery, token, activityId);
-      parseInt(data.code, 10) === 1 ?
-        yield put({
-          type: 'save',
-          payload: {
-            lotteryData: data.data,
-            luckyTimes: data.data.luckyTimes,
-          },
-        })
-        :
-        message.error(data.msg);
+      parseInt(data.code, 10) === 1
+        ? yield put({
+            type: 'save',
+            payload: {
+              lotteryData: data.data,
+              luckyTimes: data.data.luckyTimes,
+            },
+          })
+        : message.error(data.msg);
     },
-    * postUserData({ payload: { name, address, id, pinCode } }, { call, put }) {
+    *postUserData({ payload: { name, address, id, pinCode } }, { call, put }) {
       const { data } = yield call(services.postUserData, name, address, id, pinCode);
-      parseInt(data.code, 10) === 1 ?
-        message.success(data.msg)
-        :
-        message.error(data.msg);
+      parseInt(data.code, 10) === 1 ? message.success(data.msg) : message.error(data.msg);
     },
-    * checkimei({ payload: { imei, activityId } }, { call, put }) {
+    *checkimei({ payload: { imei, activityId } }, { call, put }) {
       const { data } = yield call(services.checkimei, imei, activityId);
-      parseInt(data.code, 10) !== 1 && message.error(data.msg);
+      if (parseInt(data.code, 10) !== 1) {
+        message.error(data.msg);
+        return Promise.reject();
+      }
+      return Promise.resolve();
     },
-    * checkimeiAndPhone({ payload: { imei, phone, activityId } }, { call, put }) {
+    *checkimeiAndPhone({ payload: { imei, phone, activityId } }, { call, put }) {
       const { data } = yield call(services.checkimeiAndPhone, imei, phone, activityId);
-      parseInt(data.code, 10) !== 1 && message.error(data.msg);
+      if (parseInt(data.code, 10) !== 1) {
+        message.error(data.msg);
+        return Promise.reject();
+      }
+      return Promise.resolve();
     },
 
-    * fetchCascader({ payload: { level, name } }, { call, put }) {
+    *fetchCascader({ payload: { level, name } }, { call, put }) {
       const { data } = yield call(services.fetchCascader, level, name);
-      parseInt(data.code, 10) === 1 ?
-        yield put({
-          type: 'save',
-          payload: {
-            [`level${level}`]: data.data,
-          },
-        })
-        :
-        message.error(data.msg);
+      parseInt(data.code, 10) === 1
+        ? yield put({
+            type: 'save',
+            payload: {
+              [`level${level}`]: data.data,
+            },
+          })
+        : message.error(data.msg);
     },
-    * cashLottery({ payload: { phone, awardCode } }, { call, put }) {
+    *cashLottery({ payload: { phone, awardCode } }, { call, put }) {
       const { data } = yield call(services.cashLottery, phone, awardCode);
       if (parseInt(data.code, 10) === 1) {
         if (data.data.msg === '兑奖需要短信验证') {
@@ -129,7 +130,7 @@ export default {
         message.error(data.msg);
       }
     },
-    * smsLottery({ payload: { id, key, phone, awardCode, callback } }, { call, put }) {
+    *smsLottery({ payload: { id, key, phone, awardCode, callback } }, { call, put }) {
       const { data } = yield call(services.smsLottery, id, key, phone, awardCode);
       if (parseInt(data.code, 10) === 1) {
         if (data.msg === '验证码错误') {
@@ -142,7 +143,7 @@ export default {
         message.error(data.msg);
       }
     },
-    * fetchKV({ payload: { id } }, { call, put }) {
+    *fetchKV({ payload: { id } }, { call, put }) {
       const { data } = yield call(services.fetchKV, id);
       if (parseInt(data.code, 10) === 1) {
         localStorage.setItem('kv', data.data.banner);
@@ -152,7 +153,7 @@ export default {
         message.error(data.msg);
       }
     },
-    * fetchAddress({ payload: { id, imei, phone } }, { call, put }) {
+    *fetchAddress({ payload: { id, imei, phone } }, { call, put }) {
       const { data } = yield call(services.fetchAddress, id, imei, phone);
       if (parseInt(data.code, 10) === 1) {
         if (data.data.hasDetail !== false) {
@@ -167,7 +168,7 @@ export default {
         message.error(data.msg);
       }
     },
-    * fetchPrizeList({ payload: { id } }, { call, put }) {
+    *fetchPrizeList({ payload: { id } }, { call, put }) {
       const { data } = yield call(services.fetchPrizeList, id);
       if (parseInt(data.code, 10) === 1) {
         if (data.data.hasDetail !== false) {
@@ -179,12 +180,12 @@ export default {
           });
         }
       } else {
-        if(data.msg === 'Activities have lapsed') {
+        if (data.msg === 'Activities have lapsed') {
           message.error(data.msg);
         }
       }
     },
-    * fetchPageDetail({ payload: { token, activityId, callback } }, { call, put }) {
+    *fetchPageDetail({ payload: { token, activityId, callback } }, { call, put }) {
       const { data } = yield call(services.fetchPageDetail, token, activityId);
       if (parseInt(data.code, 10) === 1) {
         yield put({

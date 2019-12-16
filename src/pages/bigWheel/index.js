@@ -521,6 +521,7 @@ class Index extends Component {
               onChange={this.changeField.bind(null, 'address')} />
             <Input style={{ border: 'none', backgroundColor: '#f5f5f5' }}
               placeholder='Enter the PIN Code' value={pinCode}
+              type="number"
               onChange={this.changeField.bind(null, 'pinCode')} onBlur={this.blurPinCode} />
             <Button type='primary' style={{
               width: 135,
